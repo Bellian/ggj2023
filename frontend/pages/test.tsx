@@ -17,8 +17,9 @@ export default function Test() {
       ></PlayingField>
   </>*/}
       <BuildField
-        playingFieldTotalAmountElements={200}
-        playingFieldWidthAmountElements={20}
+        playingFieldTotalAmountLevels={3}
+        playingFieldTotalAmountElements={50}
+        playingFieldWidthAmountElements={10}
       ></BuildField>
     </>
   );

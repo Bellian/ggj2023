@@ -7,29 +7,30 @@ export interface ISpriteInterface {
 }
 
 export class MapEditorStoreClass {
-  sprites: Array<ISpriteInterface> = [];
+  levels: Array<Array<ISpriteInterface>> = [];
 
   constructor() {
     makeObservable(this, {
-      sprites: observable,
+      levels: observable,
       setSprite: action,
       generateSprites: action,
     });
   }
 
-  setSprite(newSprite: ISpriteInterface, index: number) {
-    this.sprites[index] = newSprite;
-    this.sprites = this.sprites.slice();
+  setSprite(level: number, newSprite: ISpriteInterface, index: number) {
+    this.levels[level][index] = newSprite;
+    this.levels = this.levels.slice();
   }
 
-  generateSprites(amount: number) {
-    this.sprites.push(
-      ...Array(amount).fill({
-        name: 'default',
-        position: 0,
-      })
-    );
-    this.sprites = this.sprites.slice();
+  generateSprites(levelsAmount: number, spritesAmount: number) {
+    this.levels = Array(levelsAmount)
+      .fill(0)
+      .map(() => {
+        return Array(spritesAmount).fill({
+          name: 'default',
+          position: 0,
+        });
+      });
   }
 }
 
