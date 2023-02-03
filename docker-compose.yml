@@ -1,0 +1,24 @@
+# Use root/example as user/password credentials
+version: '3.1'
+
+networks:
+  ggj2023:
+
+services:
+  peerjs-server:
+    image: peerjs/peerjs-server
+    restart: always
+    ports:
+      - '9000:9000'
+    networks:
+      ggj2023:
+
+  frontend:
+    restart: always
+    build:
+      context: ./
+      dockerfile: ./frontend.DOCKERFILE
+    ports:
+      - '8200:3000'
+    networks:
+      ggj2023:
