@@ -11,7 +11,6 @@ import {
   ListItemText,
   TextField,
   Button,
-  ListItemIcon,
 } from '@mui/material';
 import { useRouter } from 'next/router';
 import GameStateStoreContext from '@/stores/gameStateStore';
@@ -23,14 +22,14 @@ export default observer(function Host() {
   const router = useRouter();
 
   useEffect(() => {
-    if (connectionStore.type === 'host') {
+    if (connectionStore.type === 'client') {
       return;
     }
     if (connectionStore.type === 'none') {
       router.push('/');
     }
-    if (connectionStore.type === 'client') {
-      router.push('/join');
+    if (connectionStore.type === 'host') {
+      router.push('/host');
     }
   }, [connectionStore.type]);
 
@@ -38,7 +37,7 @@ export default observer(function Host() {
     <>
       <Paper>
         <Box padding={3} maxWidth={600} width={'98vw'}>
-          <h3>Create Game:</h3>
+          <h3>Join Game:</h3>
 
           <UiPlayerList></UiPlayerList>
           <UiChat></UiChat>
