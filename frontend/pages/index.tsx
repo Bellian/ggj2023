@@ -125,6 +125,10 @@ export default observer(function Home() {
               <form
                 onSubmit={(ev) => {
                   ev.preventDefault();
+                  if (!ev.target['gameName'].value) {
+                    ev.target['gameName'];
+                    return;
+                  }
                   connectionStore.host(ev.target['gameName'].value);
                 }}
               >
@@ -136,10 +140,15 @@ export default observer(function Home() {
                       placeholder="Game Name"
                       label="Game Name"
                       sx={{ flexGrow: 1 }}
+                      required
                     ></TextField>
                   </Grid>
                   <Grid item alignItems="flex-end" display={'flex'}>
-                    <Button type="submit" sx={{ flexGrow: 0 }}>
+                    <Button
+                      variant="contained"
+                      type="submit"
+                      sx={{ flexGrow: 0 }}
+                    >
                       Host
                     </Button>
                   </Grid>
