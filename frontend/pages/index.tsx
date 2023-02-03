@@ -1,52 +1,71 @@
-import Head from "next/head";
-import Image from "next/image";
-import { Inter } from "@next/font/google";
-import styles from "@/styles/Home.module.css";
 import { useContext, useEffect } from "react";
-import Peer from 'peerjs';
+import { observer } from "mobx-react";
 import ConnectionStoreContext from "@/stores/connectionStore";
+import { Grid, Paper, Box, List, ListItem, ListItemButton, ListItemText, TextField, Button } from "@mui/material";
+import { useRouter } from "next/router";
 
-const inter = Inter({ subsets: ["latin"] });
-
-export default function Home() {
+export default observer(function Home() {
   const store = useContext(ConnectionStoreContext);
-
+  const router = useRouter();
 
   useEffect(() => {
-    console.log('boot');
-    store.init('master');
-/*
-    peer.on('open', (...args) => {
-      console.log('open', ...args)
-    })
-    peer.on('close', (...args) => {
-      console.log('close', ...args)
-    })
-
-    peer.on("connection", (conn) => {
-      console.log('conn');
-      console.log(conn);
-
-      conn.on("data", (data) => {
-        // Will print 'hi!'
-        console.log(data);
-      });
-      conn.on("open", () => {
-        conn.send("hello!");
-      });
-    });
-
-    return () => {
-      peer.disconnect();
-      peer.destroy();
-    }
-    */
-    
+    store.reset();
   }, []);
+
+  useEffect(() => {
+    if (store.type === 'none') {
+      return;
+    }
+    if (store.type === 'host') {
+      router.push('/host');
+    }
+    if (store.type === 'client') {
+      router.push('/join');
+    }
+  }, [store.type]);
 
   return (
     <>
-      <h1>Master</h1>
+      <Grid container justifyContent={"center"} gap={2} padding={2}>
+        <Grid item flexGrow={1}>
+          <Paper>
+            <Box padding={3}>
+              <h3>Join Game:</h3>
+              <List>
+                {
+                  store.openGames.map((game) => {
+                    return <ListItem key={game} disablePadding>
+                      <ListItemButton>
+                        <ListItemText primary={game} />
+                      </ListItemButton>
+                    </ListItem>
+                  })
+                }
+              </List>
+            </Box>
+          </Paper>
+        </Grid>
+        <Grid item flexGrow={1}>
+          <Paper>
+            <Box padding={3}>
+              <h3>Host Game</h3>
+              <form onSubmit={(ev) => {
+                ev.preventDefault();
+                store.host(ev.target['gameName'].value);
+              }}>
+                <Grid container>
+                  <Grid item flexGrow={1} display="flex">
+                    <TextField variant="standard" name="gameName" placeholder="Game Name" label="Game Name" sx={{ flexGrow: 1 }}></TextField>
+                  </Grid>
+                  <Grid item alignItems="flex-end" display={'flex'}>
+                    <Button type="submit" sx={{ flexGrow: 0 }}>Host</Button>
+                  </Grid>
+                </Grid>
+              </form>
+            </Box>
+          </Paper>
+        </Grid>
+      </Grid>
     </>
   );
-}
+});

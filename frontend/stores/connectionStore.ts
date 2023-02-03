@@ -1,17 +1,29 @@
 import { action, computed, makeObservable, observable } from "mobx";
 import Peer, { DataConnection } from "peerjs";
 import { createContext } from "react";
+import { GameStateStoreStore } from "./gameState";
 
 
 export class ConnectionStoreClass {
-    connection: DataConnection | null = null;
-    peer: Peer | null = null;
+    peer: Peer = null;
+    id: string = null;
+    type: 'none' | 'host' | 'client' = 'none';
+    openGames: string[] = [];
+    // clients
+    connection: DataConnection = null;
+    // hosts
+    clients: DataConnection[] = [];
+
 
     constructor() {
         makeObservable(this, {
             connection: observable,
+            id: observable,
+            type: observable,
+            clients: observable,
+            openGames: observable,
             peer: observable,
-            init: action,
+            openPeer: action,
         });
     }
 
@@ -79,6 +91,71 @@ export class ConnectionStoreClass {
         this.connection.on("iceStateChanged", (...args) => {
             console.log('connection iceStateChanged', ...args);
         });
+    }
+
+    openPeer(id = 'default-' + Date.now() + (Math.random() * 1000000).toFixed(0)) {
+        if (this.peer) {
+            this.peer.destroy();
+        }
+        return new Promise<Peer>((resolve, reject) => {
+            const { Peer } = require("peerjs");
+
+            this.peer = new (Peer as typeof Peer)(id, {
+                host: "176.9.184.83",
+                port: 9000,
+                path: "/",
+            }) as Peer;
+
+            this.peer.on('open', (id) => {
+                (action('setId', () => {
+                    this.id = id;
+                    resolve(this.peer);
+                }))();
+                this.peer.listAllPeers((peers) => {
+                    (action('setGameList', () => {
+                        this.openGames.length = 0;
+                        this.openGames.push(...peers.filter(e => !e.includes('default-')));
+                        this.openGames = this.openGames.slice();
+                    }))();
+
+
+                })
+            });
+
+            this.peer.on('error', (error) => {
+                reject(error)
+            });
+        })
+
+    }
+
+    reset() {
+        this.type = "none";
+        this.openPeer();
+    };
+
+    async host(name: string) {
+        console.log('host game');
+
+        this.openPeer(name);
+        this.type = 'host';
+
+        this.peer.on('connection', connection => {
+            if (GameStateStoreStore.state.state !== 'prepare') {
+                // game has started!
+                connection.close();
+                return;
+            }
+            this.clients.push(connection);
+
+            connection.on('close', () => {
+                this.clients.splice(this.clients.indexOf(connection), 1);
+            })
+            connection.on('error', (err) => {
+                console.log('Client error');
+                console.error(err);
+            })
+        })
     }
 
 }
