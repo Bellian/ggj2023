@@ -1,26 +1,35 @@
 import React, { FC, useEffect, useRef, useState } from 'react';
-import styles from './spriteSelector.module.scss';
+import styles from './Sprite.module.scss';
 import { betterAddEventListener } from '../../services/utils';
+import { getSpriteConfig } from '../../services/spriteConfig.data';
 
-interface SpriteSelectorProps {
+interface SpriteProps {
   name: string;
   elementSize: { width: number; height: number };
-  spriteSize: { width: number; height: number };
   position: number;
 }
 
-const SpriteSelector: FC<SpriteSelectorProps> = ({
-  name,
-  elementSize,
-  spriteSize,
-  position,
-}) => {
+const Sprite: FC<SpriteProps> = ({ name, elementSize, position }) => {
   const spriteSelectorElement = useRef<any>();
   const [naturalSize, setNaturalSize] = useState({ width: 0, height: 0 });
   const [trueSpriteSheetSize, setTrueSpriteSheetSize] = useState({
     width: 0,
     height: 0,
   });
+
+  const spriteConfig = getSpriteConfig.find((spriteConfigItem) => {
+    console.log(name);
+    return spriteConfigItem.name === name;
+  }) as any;
+
+  if (!spriteConfig) {
+    throw 'define the config for this sprite you donkey!';
+  }
+
+  const spriteSize = {
+    width: spriteConfig.size.width,
+    height: spriteConfig.size.height,
+  };
 
   useEffect(() => {
     const spriteImage = new Image();
@@ -71,4 +80,4 @@ const SpriteSelector: FC<SpriteSelectorProps> = ({
   );
 };
 
-export default SpriteSelector;
+export default Sprite;

@@ -1,23 +1,17 @@
-import Head from 'next/head';
-import Image from 'next/image';
 import { Inter } from '@next/font/google';
-import styles from '@/styles/Home.module.css';
-import { useContext, useEffect } from 'react';
-import Peer from 'peerjs';
-import ConnectionStoreContext from '@/stores/connectionStore';
-import SpriteSelector from '@/components/spriteSelector/spriteSelector';
+import PlayingField from '@/components/PlayingField/PlayingField';
+import testData from '../stores/playingFieldExample.data';
 
 const inter = Inter({ subsets: ['latin'] });
 
 export default function Test() {
   return (
     <>
-      <SpriteSelector
-        name="factory"
-        elementSize={{ width: 100, height: 100 }}
-        spriteSize={{ width: 16, height: 16 }}
-        position={11}
-      />
+      <PlayingField
+        spriteData={testData}
+        elementSize={{ width: 20, height: 20 }}
+        playingFieldWidthAmountElements={10}
+      ></PlayingField>
       <h1>Master</h1>
     </>
   );
