@@ -1,8 +1,11 @@
 import { action, computed, makeObservable, observable } from "mobx";
 import Peer, { DataConnection } from "peerjs";
 import { createContext } from "react";
-import { GameStateStoreStore } from "./gameState";
+import { GameStateStoreClass, GameStateStoreStore } from "./gameStateStore";
+import { PersistStoreStore } from "./persistStore";
 
+
+type MessageType = 'message' | 'state';
 
 export class ConnectionStoreClass {
     peer: Peer = null;
@@ -24,72 +27,7 @@ export class ConnectionStoreClass {
             openGames: observable,
             peer: observable,
             openPeer: action,
-        });
-    }
-
-    init(id: string | undefined = undefined) {
-        if (this.peer) {
-            return;
-        }
-        console.log('init');
-
-        const { Peer } = require("peerjs");
-
-        this.peer = new (Peer as typeof Peer)(id, {
-            host: "176.9.184.83",
-            port: 9000,
-            path: "/myapp",
-        }) as Peer;
-
-        this.peer.on('open', (...args) => {
-            console.log('peer open', ...args);
-        })
-        this.peer.on('close', (...args) => {
-            console.log('peer close', ...args);
-        })
-        this.peer.on('call', (...args) => {
-            console.log('peer call', ...args);
-        })
-        this.peer.on('connection', (...args) => {
-            console.log('peer connection', ...args);
-        })
-        this.peer.on('disconnected', (...args) => {
-            console.log('peer disconnected', ...args);
-        })
-        this.peer.on('error', (...args) => {
-            console.log('peer error', ...args);
-        })
-    }
-
-    connect(id: string) {
-        if (!this.peer) {
-            throw new Error('no peer!');
-        }
-        if (this.connection) {
-            return;
-        }
-        console.log('connect');
-        this.connection = this.peer.connect(id, {
-            metadata: {
-                name: "Bellian",
-            },
-        });
-
-        this.connection.on("open", (...args) => {
-            console.log('connection open', ...args);
-            this.connection!.send("hi!");
-        });
-        this.connection.on("close", (...args) => {
-            console.log('connection close', ...args);
-        });
-        this.connection.on("data", (...args) => {
-            console.log('connection data', ...args);
-        });
-        this.connection.on("error", (...args) => {
-            console.log('connection error', ...args);
-        });
-        this.connection.on("iceStateChanged", (...args) => {
-            console.log('connection iceStateChanged', ...args);
+            reset: action,
         });
     }
 
@@ -111,15 +49,7 @@ export class ConnectionStoreClass {
                     this.id = id;
                     resolve(this.peer);
                 }))();
-                this.peer.listAllPeers((peers) => {
-                    (action('setGameList', () => {
-                        this.openGames.length = 0;
-                        this.openGames.push(...peers.filter(e => !e.includes('default-')));
-                        this.openGames = this.openGames.slice();
-                    }))();
-
-
-                })
+                this.updateGameList();
             });
 
             this.peer.on('error', (error) => {
@@ -129,16 +59,31 @@ export class ConnectionStoreClass {
 
     }
 
+    updateGameList() {
+        this.peer.listAllPeers((peers) => {
+            (action('setGameList', () => {
+                this.openGames.length = 0;
+                this.openGames.push(...peers.filter(e => !e.includes('default-')));
+                this.openGames = this.openGames.slice();
+            }))();
+        })
+    }
+
     reset() {
         this.type = "none";
+        this.connection?.close();
         this.openPeer();
     };
 
     async host(name: string) {
-        console.log('host game');
 
         this.openPeer(name);
-        this.type = 'host';
+        (action('setGameList', () => {
+            this.type = 'host';
+        }))();
+        this.peer.on('open', () => {
+            GameStateStoreStore.init();
+        })
 
         this.peer.on('connection', connection => {
             if (GameStateStoreStore.state.state !== 'prepare') {
@@ -146,16 +91,97 @@ export class ConnectionStoreClass {
                 connection.close();
                 return;
             }
-            this.clients.push(connection);
 
+            connection.on('open', () => {
+                // this.sendMessage(connection, 'state', GameStateStoreStore.state);
+                GameStateStoreStore.brodcastMessage(`Player ${connection.metadata.name} joined!`);
+            })
+            connection.on('data', (data: { type: MessageType, data: any }) => {
+                switch (data.type) {
+                    case 'message':
+                        GameStateStoreStore.brodcastMessage(data.data);
+                        break;
+                    case 'state':
+                        console.log('state update from client');
+                        break;
+                    // GameStateStoreStore.setState(data.data);
+                }
+            })
             connection.on('close', () => {
                 this.clients.splice(this.clients.indexOf(connection), 1);
+                GameStateStoreStore.playerRemove(connection.peer);
             })
             connection.on('error', (err) => {
                 console.log('Client error');
                 console.error(err);
             })
+
+
+            this.clients.push(connection);
+            const joined = GameStateStoreStore.playerJoin({
+                id: connection.peer,
+                name: connection.metadata.name,
+                skin: '',
+            });
+
+
+            if (!joined) {
+                connection.close();
+            }
         })
+    }
+
+    sendMessage(connection: DataConnection, type: MessageType, data: any) {
+        connection.send({
+            type,
+            data,
+        })
+    }
+
+    async join(id: string) {
+        if (!this.peer) {
+            throw new Error('no peer!');
+        }
+        if (this.connection) {
+            this.connection.close();
+        }
+
+        (action('setGameList', () => {
+            this.connection = this.peer.connect(id, {
+                metadata: {
+                    name: PersistStoreStore.name,
+                },
+            });
+        }))();
+
+        this.connection.on("open", (...args) => {
+
+            (action('setGameList', () => {
+                this.type = 'client';
+            }))();
+        });
+        this.connection.on("close", (...args) => {
+            (action('setGameList', () => {
+                this.type = 'none';
+            }))();
+        });
+        this.connection.on("data", (data: { type: MessageType, data: any }) => {
+            // put data in game state
+            switch (data.type) {
+                case 'message':
+                    GameStateStoreStore.addMessage(data.data);
+                    break;
+                case 'state':
+                    GameStateStoreStore.setState(data.data);
+                    break;
+            }
+        });
+        this.connection.on("error", (...args) => {
+            console.log('connection error', ...args);
+        });
+        this.connection.on("iceStateChanged", (...args) => {
+            console.log('connection iceStateChanged', ...args);
+        });
     }
 
 }
