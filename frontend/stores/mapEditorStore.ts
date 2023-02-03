@@ -13,11 +13,22 @@ export class MapEditorStoreClass {
     makeObservable(this, {
       sprites: observable,
       setSprite: action,
+      generateSprites: action,
     });
   }
 
   setSprite(newSprite: ISpriteInterface, index: number) {
     this.sprites[index] = newSprite;
+    this.sprites = this.sprites.slice();
+  }
+
+  generateSprites(amount: number) {
+    this.sprites.push(
+      ...Array(amount).fill({
+        name: 'default',
+        position: 0,
+      })
+    );
     this.sprites = this.sprites.slice();
   }
 }

@@ -2,6 +2,7 @@ import { Inter } from '@next/font/google';
 import PlayingField from '@/components/PlayingField/PlayingField';
 import testData from '../stores/playingFieldExample.data';
 import Toolbar from '@/components/Toolbar/Toolbar';
+import BuildField from '@/components/BuildField/BuildField';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -15,7 +16,10 @@ export default function Test() {
         playingFieldWidthAmountElements={10}
       ></PlayingField>
   </>*/}
-      <Toolbar></Toolbar>
+      <BuildField
+        playingFieldTotalAmountElements={200}
+        playingFieldWidthAmountElements={20}
+      ></BuildField>
     </>
   );
 }

@@ -4,7 +4,7 @@ export const getSpriteConfig = [
     size: { width: 16, height: 16 },
   },
   {
-    name: 'factory-test',
-    size: { width: 8, height: 8 },
+    name: 'default',
+    size: { width: 100, height: 100 },
   },
 ];

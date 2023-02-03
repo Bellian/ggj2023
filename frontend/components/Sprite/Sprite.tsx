@@ -31,24 +31,18 @@ const Sprite: FC<SpriteProps> = ({ name, elementSize, position }) => {
   };
 
   useEffect(() => {
-    const loadSpriteImageEvent = getImageSize(name, (width, height) => {
+    getImageSize(name, (width, height) => {
       setNaturalSize({
         width,
         height,
       });
+      console.log();
+      setTrueSpriteSheetSize({
+        width: (elementSize.width / spriteSize.width) * width,
+        height: (elementSize.height / spriteSize.height) * height,
+      });
     });
-    return () => {
-      loadSpriteImageEvent();
-    };
-  }, []);
-
-  useEffect(() => {
-    setTrueSpriteSheetSize({
-      width: (elementSize.width / spriteSize.width) * naturalSize.width,
-      height: (elementSize.height / spriteSize.height) * naturalSize.height,
-    });
-  }, [elementSize, spriteSize, naturalSize]);
-
+  }, [position, name]);
   return (
     <div
       ref={spriteSelectorElement}

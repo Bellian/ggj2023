@@ -4,9 +4,11 @@ import styles from './Toolbar.module.scss';
 import { getSpriteConfig } from '@/services/spriteConfig.data';
 import { getImageSize } from '@/services/utils';
 
-interface ToolbarProps {}
+interface ToolbarProps {
+  onSelected: (spriteSheetName: string, spritePosition: number) => any;
+}
 
-const Toolbar: FC<ToolbarProps> = () => {
+const Toolbar: FC<ToolbarProps> = ({ onSelected }) => {
   const [spriteSheetSizes, setSpriteSheetSizes] = useState(
     Array(getSpriteConfig.length).fill({ width: 0, height: 0 })
   );
@@ -23,20 +25,25 @@ const Toolbar: FC<ToolbarProps> = () => {
   return (
     <div className={styles.Toolbar}>
       {getSpriteConfig.map(
-        (spriteConfig, index) =>
-          spriteSheetSizes[index] &&
+        (spriteConfig, spriteSheetIndex) =>
+          spriteSheetSizes[spriteSheetIndex] &&
           Array.from(
             Array(
-              (spriteSheetSizes[index].width / spriteConfig.size.width) *
-                (spriteSheetSizes[index].height / spriteConfig.size.height)
+              (spriteSheetSizes[spriteSheetIndex].width /
+                spriteConfig.size.width) *
+                (spriteSheetSizes[spriteSheetIndex].height /
+                  spriteConfig.size.height)
             )
-          ).map((x, index) => {
+          ).map((x, spriteIndex) => {
             return (
-              <Sprite
-                name={spriteConfig.name}
-                elementSize={{ width: 20, height: 20 }}
-                position={index}
-              />
+              <div onClick={() => onSelected(spriteConfig.name, spriteIndex)}>
+                <Sprite
+                  key={spriteSheetIndex + spriteIndex}
+                  name={spriteConfig.name}
+                  elementSize={{ width: 20, height: 20 }}
+                  position={spriteIndex}
+                />
+              </div>
             );
           })
       )}
