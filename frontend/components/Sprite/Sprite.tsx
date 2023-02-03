@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useRef, useState } from 'react';
 import styles from './Sprite.module.scss';
-import { betterAddEventListener } from '../../services/utils';
+import { betterAddEventListener, getImageSize } from '../../services/utils';
 import { getSpriteConfig } from '../../services/spriteConfig.data';
 
 interface SpriteProps {
@@ -18,7 +18,6 @@ const Sprite: FC<SpriteProps> = ({ name, elementSize, position }) => {
   });
 
   const spriteConfig = getSpriteConfig.find((spriteConfigItem) => {
-    console.log(name);
     return spriteConfigItem.name === name;
   }) as any;
 
@@ -32,18 +31,12 @@ const Sprite: FC<SpriteProps> = ({ name, elementSize, position }) => {
   };
 
   useEffect(() => {
-    const spriteImage = new Image();
-    spriteImage.src = `/sprites/${name}.png`;
-    const loadSpriteImageEvent = betterAddEventListener(
-      'load',
-      (event) => {
-        setNaturalSize({
-          width: spriteImage.naturalWidth,
-          height: spriteImage.naturalHeight,
-        });
-      },
-      spriteImage
-    );
+    const loadSpriteImageEvent = getImageSize(name, (width, height) => {
+      setNaturalSize({
+        width,
+        height,
+      });
+    });
     return () => {
       loadSpriteImageEvent();
     };

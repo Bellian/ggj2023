@@ -19,3 +19,16 @@ export const betterAddEventListener = <K extends keyof WindowEventMap>(
 export const execFuncArray = (funcArray: Array<Function>) => {
   funcArray.forEach((func) => func());
 };
+
+export const getImageSize = (name, cb) => {
+  const spriteImage = new Image();
+  spriteImage.src = `/sprites/${name}.png`;
+  const loadSpriteImageEvent = betterAddEventListener(
+    'load',
+    (event) => {
+      cb(spriteImage.naturalWidth, spriteImage.naturalHeight);
+    },
+    spriteImage
+  );
+  return loadSpriteImageEvent;
+};
