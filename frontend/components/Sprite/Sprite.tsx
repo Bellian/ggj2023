@@ -2,7 +2,7 @@ import React, { FC, useEffect, useState } from 'react';
 import styles from './Sprite.module.scss';
 import SpriteItem, { SpriteItemProps } from '../SpriteItem/SpriteItem';
 import { getImageSize } from '@/services/utils';
-import SpriteData from '@/services/spriteData';
+import SpriteData from '@/services/SpriteData';
 
 interface SpriteProps {
   name: string;

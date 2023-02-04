@@ -38,12 +38,7 @@ export default observer(function Home() {
     if (connectionStore.type === 'none') {
       return;
     }
-    if (connectionStore.type === 'host') {
-      router.push('/host');
-    }
-    if (connectionStore.type === 'client') {
-      router.push('/join');
-    }
+    router.push('/join');
   }, [connectionStore.type]);
 
   return (
@@ -139,6 +134,7 @@ export default observer(function Home() {
                       name="gameName"
                       placeholder="Game Name"
                       label="Game Name"
+                      defaultValue={'new Game'}
                       sx={{ flexGrow: 1 }}
                       required
                     ></TextField>

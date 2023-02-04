@@ -7,6 +7,8 @@ import { PersistStoreStore } from "./persistStore";
 
 type MessageType = 'message' | 'state';
 
+const peers: Peer[] = [];
+
 export class ConnectionStoreClass {
     peer: Peer = null;
     id: string = null;
@@ -29,6 +31,13 @@ export class ConnectionStoreClass {
             openPeer: action,
             reset: action,
         });
+        if (peers.length > 0) {
+            peers.forEach(peer => {
+                peer.destroy();
+            });
+            peers.length = 0;
+
+        }
     }
 
     openPeer(id = 'default-' + Date.now() + (Math.random() * 1000000).toFixed(0)) {
@@ -45,6 +54,7 @@ export class ConnectionStoreClass {
                 secure: true,
 
             }) as Peer;
+            peers.push(this.peer);
 
             this.peer.on('open', (id) => {
                 (action('setId', () => {
@@ -157,10 +167,10 @@ export class ConnectionStoreClass {
         }))();
 
         this.connection.on("open", (...args) => {
-
             (action('setGameList', () => {
                 this.type = 'client';
             }))();
+            GameStateStoreStore.init();
         });
         this.connection.on("close", (...args) => {
             (action('setGameList', () => {

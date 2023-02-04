@@ -16,29 +16,30 @@ import { useRouter } from 'next/router';
 import GameStateStoreContext from '@/stores/gameStateStore';
 import UiPlayerList from '@/components/UI/PlayerList/PlayerList';
 import UiChat from '@/components/UI/Chat/Chat';
+import UiGameConfig from '@/components/UI/GameConfig/GameConfig';
+import { isServer } from '@/helpers';
 
 export default observer(function Host() {
   const connectionStore = useContext(ConnectionStoreContext);
+  const gameStore = useContext(GameStateStoreContext);
   const router = useRouter();
 
   useEffect(() => {
-    if (connectionStore.type === 'client') {
-      return;
-    }
     if (connectionStore.type === 'none') {
       router.push('/');
     }
-    if (connectionStore.type === 'host') {
-      router.push('/host');
+    if (gameStore.state?.state && gameStore.state.state !== 'prepare') {
+      router.push('/level/level-' + gameStore.state.config.level);
     }
-  }, [connectionStore.type]);
+  }, [connectionStore.type, gameStore.state?.state]);
 
   return (
     <>
       <Paper>
         <Box padding={3} maxWidth={600} width={'98vw'}>
-          <h3>Join Game:</h3>
+          <h3>{isServer() ? 'Host Game:' : 'Join Game:'}</h3>
 
+          <UiGameConfig></UiGameConfig>
           <UiPlayerList></UiPlayerList>
           <UiChat></UiChat>
         </Box>
