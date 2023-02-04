@@ -6,7 +6,7 @@ import {
 import MapEditorStoreContext from '@/stores/mapEditorStore';
 import { Button, Dialog, TextField } from '@mui/material';
 import { observer } from 'mobx-react';
-import React, { FC, useContext, useEffect, useState } from 'react';
+import React, { FC, useContext, useEffect } from 'react';
 import Sprite from '../Sprite/Sprite';
 import Toolbar from '../Toolbar/Toolbar';
 import styles from './BuildField.module.scss';
@@ -60,7 +60,7 @@ const Utils = observer(() => {
         onClick={() => {
           downloadObjectAsJson(
             JSON.parse(
-              JSON.stringify(mapState.levels).replaceAll('default', 'empty')
+              JSON.stringify(mapState.world).replaceAll('default', 'empty')
             ),
             'buildFieldExport'
           );
@@ -80,7 +80,7 @@ const Utils = observer(() => {
           onChange={(event) => {
             const fileReader = new FileReader();
             fileReader.onload = (event) => {
-              mapState.loadLevels(JSON.parse((event.target as any).result));
+              mapState.loadWorld(JSON.parse((event.target as any).result));
             };
             fileReader.readAsText(event.target.files[0]);
             //
@@ -94,16 +94,16 @@ const Utils = observer(() => {
         onChange={(event) => {
           mapState.set('activeLevel', +event.target.value);
         }}
-        playingFieldLevels={mapState.playingFieldLevels}
+        playingFieldLevels={mapState.world.levels.length}
       />
       <TextField
         className={styles.BuildFieldInput}
         label="Columns"
         variant="filled"
         type="number"
-        value={mapState.playingFieldWidth}
+        value={mapState.world.width}
         onChange={(event) => {
-          mapState.set('playingFieldWidth', +event.target.value);
+          mapState.setPlayingFieldWidth(+event.target.value);
         }}
       />
       <TextField
@@ -111,9 +111,9 @@ const Utils = observer(() => {
         label="Rows"
         variant="filled"
         type="number"
-        value={mapState.playingFieldHeight}
+        value={mapState.world.height}
         onChange={(event) =>
-          mapState.set('playingFieldHeight', +event.target.value)
+          mapState.setPlayingFieldHeight(+event.target.value)
         }
       />
       <TextField
@@ -121,9 +121,9 @@ const Utils = observer(() => {
         label="Levels"
         variant="filled"
         type="number"
-        value={mapState.playingFieldLevels}
+        value={mapState.world.levels.length}
         onChange={(event) =>
-          mapState.set('playingFieldLevels', +event.target.value)
+          mapState.setPlayingFieldLevels(+event.target.value)
         }
       />
     </div>
@@ -159,10 +159,12 @@ const RenderMap = observer(() => {
     <div
       className={styles.BuildFieldSelection}
       style={{
-        width: mapState.playingFieldWidth * elementSize.width,
+        width: mapState.world.width * elementSize.width,
+        height: mapState.world.height * elementSize.height,
       }}
     >
-      {mapState.levels.map((level, activeLevelIndex) => {
+      <pre>{JSON.stringify(mapState.world.levels)}</pre>
+      {mapState.world.levels.map((level, activeLevelIndex) => {
         return (
           <div
             className={styles.BuildFieldLevel}

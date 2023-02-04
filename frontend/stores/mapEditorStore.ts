@@ -1,5 +1,12 @@
-import { action, makeAutoObservable, makeObservable, observable } from 'mobx';
+import {
+  action,
+  makeAutoObservable,
+  makeObservable,
+  observable,
+  override,
+} from 'mobx';
 import { createContext } from 'react';
+import { IWorldInfo } from './worldStore';
 
 export interface ISpriteInterface {
   name: string;
@@ -11,23 +18,15 @@ export interface ISettableMapEditorElements {
   currentEditedSprite: number;
   activeLevel: number;
 
-  playingFieldLevels: number;
-  playingFieldHeight: number;
-  playingFieldWidth: number;
-
   lastSprite: ISpriteInterface;
 }
 
 export class MapEditorStoreClass {
-  levels: Array<Array<ISpriteInterface>> = [];
+  world: IWorldInfo = { levels: [[]], width: 1, height: 1, entities: [] };
 
   toolbarOpen = false;
   currentEditedSprite = 0;
   activeLevel = 0;
-
-  playingFieldLevels = 1;
-  playingFieldHeight = 1;
-  playingFieldWidth = 1;
 
   lastSprite: ISpriteInterface = {
     name: 'default',
@@ -40,23 +39,25 @@ export class MapEditorStoreClass {
   }
 
   setSprite(level: number, newSprite: ISpriteInterface, index: number) {
-    this.levels[level][index] = newSprite;
-    this.levels = this.levels.slice();
+    this.world.levels[level][index] = newSprite;
+    this.world.levels = this.world.levels.slice();
   }
 
-  generateSprites() {
-    this.levels = Array(this.playingFieldLevels)
+  generateSprites(newLevelLength?: number) {
+    this.world.levels = new Array(
+      newLevelLength ? newLevelLength : this.world.levels.length
+    )
       .fill(0)
       .map(() => {
-        return Array(this.playingFieldWidth * this.playingFieldHeight).fill({
+        return Array(this.world.width * this.world.height).fill({
           name: 'default',
           position: 0,
         });
       });
   }
 
-  loadLevels(levels: Array<any>) {
-    this.levels = levels;
+  loadWorld(world: IWorldInfo) {
+    this.world = world;
   }
 
   set<T extends keyof ISettableMapEditorElements>(
@@ -65,17 +66,19 @@ export class MapEditorStoreClass {
   ) {
     action(() => {
       (this as any)[key] = value;
-
-      if (
-        [
-          'playingFieldLevels',
-          'playingFieldHeight',
-          'playingFieldWidth',
-        ].includes(key)
-      ) {
-        this.generateSprites();
-      }
     })();
+  }
+
+  setPlayingFieldLevels(length: number) {
+    this.generateSprites(length);
+  }
+  setPlayingFieldHeight(height: number) {
+    this.world.height = height;
+    this.generateSprites();
+  }
+  setPlayingFieldWidth(width: number) {
+    this.world.width = width;
+    this.generateSprites();
   }
 }
 
