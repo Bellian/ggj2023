@@ -57,14 +57,18 @@ const BuildField: FC<BuildFieldProps> = observer(
       <div className={styles.BuildField}>
         <Button
           variant="contained"
-          onClick={() =>
+          onClick={() => {
+            console.log(JSON.stringify(mapState.levels));
             downloadObjectAsJson(
               JSON.parse(
-                JSON.stringify(mapState.levels).replace('default', 'empty')
+                JSON.stringify(mapState.levels).replaceAll(
+                  '"name":"default"',
+                  '"name":"empty"'
+                )
               ),
               'buildFieldExport'
-            )
-          }
+            );
+          }}
           className={styles.BuildFieldDownload}
         >
           Download State
@@ -78,13 +82,12 @@ const BuildField: FC<BuildFieldProps> = observer(
           Load State
           <input
             onChange={(event) => {
-              var reader = new FileReader();
-              reader.onload = () => {
-                console.log((event.target as any).result);
-
+              const fileReader = new FileReader();
+              fileReader.onload = (event) => {
                 mapState.loadLevels(JSON.parse((event.target as any).result));
               };
-              reader.readAsText(event.target.files[0]);
+              fileReader.readAsText(event.target.files[0]);
+              //
             }}
             type="file"
             hidden
