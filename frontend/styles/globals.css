@@ -1,13 +1,10 @@
 :root {
-
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    
   }
 }
-
 
 html,
 body,
@@ -16,12 +13,14 @@ body > * {
   height: 100vh;
   max-width: 100vw;
   max-height: 100vh;
-  margin:0;
+  margin: 0;
 }
 
 body {
   overflow: hidden;
-  background: #111111;
+  background: url(/background.jpg);
+  background-size: cover;
+  image-rendering: pixelated;
   color: white;
 }
 body > #__next {

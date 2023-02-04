@@ -1,5 +1,5 @@
 import MapEditorStoreContext from '@/stores/mapEditorStore';
-import { Dialog, MenuItem, Select } from '@mui/material';
+import { Button, Dialog, MenuItem, Select } from '@mui/material';
 import { observer } from 'mobx-react';
 import React, { FC, useContext, useEffect, useState } from 'react';
 import Sprite from '../Sprite/Sprite';
