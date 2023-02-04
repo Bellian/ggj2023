@@ -8,7 +8,7 @@ RUN npm install sharp
 FROM dependency-base AS production-base
 
 COPY ./frontend/ .
-CMD npx next build
+RUN npx next build
 
 FROM production-base AS production
 
