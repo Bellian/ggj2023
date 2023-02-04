@@ -99,7 +99,6 @@ export class WorldStoreClass {
         if (isServer()) {
             GameStateStoreStore.state?.entities?.push(instance.toJSON());
         }
-        console.log(this);
     }
 
     createEntity(entity: any) {
@@ -118,7 +117,6 @@ export class WorldStoreClass {
     }
 
     deleteEntity(entity: Entity) {
-        debugger;
         this.dynamicTiles = this.dynamicTiles.filter(tile => {
             return tile.entityID !== entity.id;
         });

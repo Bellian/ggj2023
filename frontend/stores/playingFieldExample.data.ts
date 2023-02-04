@@ -156,3 +156,4 @@ export default [
     { name: 'empty', position: 0 },
   ],
 ];
+

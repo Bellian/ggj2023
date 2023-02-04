@@ -15,7 +15,7 @@ export interface IGameState {
     config: IConfig;
     world: any;
     players: IPlayer[];
-    entities: any;
+    entities: any[];
 }
 export interface IPlayer {
     id: string;
@@ -84,16 +84,25 @@ export class GameStateStoreClass {
                 ],
                 entities: []
             }
-            this.interval = setInterval(() => {
-                if (!this.state?.state) {
-                    return;
-                }
-                if (this.state.state === 'started') {
-                    WorldStoreStore.update();
-                }
-                this.sync();
-            }, 30);
         }
+
+        this.interval = setInterval(() => {
+            if (!this.state?.state) {
+                return;
+            }
+            if (this.state.state === 'started') {
+                WorldStoreStore.update();
+            }
+            this.sync();
+            if (isServer()) {
+                this.state.entities.forEach(entity => {
+                    const find = WorldStoreStore.entities.find(e => e.id === entity.id);
+                    if (!find) {
+                        WorldStoreStore.deleteEntity(entity);
+                    }
+                })
+            }
+        }, 30);
     }
 
     // server
@@ -119,12 +128,23 @@ export class GameStateStoreClass {
     }
 
     sync() {
-        ConnectionStoreStore.clients.forEach((client) => {
-            if (!client.open) {
-                return;
-            }
-            ConnectionStoreStore.sendMessage(client, 'state', this.state);
-        });
+        if (isServer()) {
+            ConnectionStoreStore.clients.forEach((client) => {
+                if (!client.open) {
+                    console.log('no sync');
+                    return;
+                }
+                console.log('sync');
+                ConnectionStoreStore.sendMessage(client, 'state', this.state);
+            });
+        } else {
+            const data = WorldStoreStore?.entities?.filter(e => e.authority === this.getOwnPlayer()?.id).map(e => e.toJSON());
+            console.log('update', data);
+            ConnectionStoreStore.connection.send({
+                type: 'entityUpdate',
+                data
+            });
+        }
     }
 
     startGame() {
@@ -170,20 +190,29 @@ export class GameStateStoreClass {
             this.state = data;
             return;
         }
-        debugger;
         const { config, entities, players, state, world } = data;
         Object.assign(this.state.config, config);
         Object.assign(this.state.players, players);
         this.state.state = state;
         this.state.world ? Object.assign(this.state.world, world) : this.state.world = world;
 
+        this.updateEntities(entities);
+    }
+
+    updateEntities(entities: any, delelteUnknown = true) {
         const left = new Set(WorldStoreStore.entities || []);
         entities?.forEach(entity => {
             // check if entity exists
             const foundEntity = WorldStoreStore.entities?.find(e => e.id === entity.id);
             if (foundEntity) {
                 left.delete(foundEntity);
+                if (this.getOwnPlayerController() && foundEntity.authority === this.getOwnPlayer().id) {
+                    return;
+                }
                 Object.keys(entity).forEach(key => {
+                    if (entity[key] instanceof ArrayBuffer) {
+                        entity[key] = new Float32Array(entity[key]);
+                    }
                     if (!foundEntity[key]) {
                         foundEntity[key] = entity[key];
                     } else if (foundEntity[key] instanceof glMatrix.ARRAY_TYPE || Array.isArray(foundEntity[key])) {
@@ -202,16 +231,17 @@ export class GameStateStoreClass {
                         // ovverride
                         foundEntity[key] = entity[key];
                     }
-                })
+                });
             } else {
                 // create new entity
                 WorldStoreStore.createEntity(entity);
             }
         })
-        left.forEach(entity => {
-            WorldStoreStore.deleteEntity(entity);
-        });
-
+        if (delelteUnknown) {
+            left.forEach(entity => {
+                WorldStoreStore.deleteEntity(entity);
+            });
+        }
     }
 
     sendMessage(message: string) {

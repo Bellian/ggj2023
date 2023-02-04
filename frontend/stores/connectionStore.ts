@@ -5,7 +5,7 @@ import { GameStateStoreClass, GameStateStoreStore } from "./gameStateStore";
 import { PersistStoreStore } from "./persistStore";
 
 
-type MessageType = 'message' | 'state';
+type MessageType = 'message' | 'state' | 'entityUpdate';
 
 const peers: Peer[] = [];
 
@@ -113,6 +113,9 @@ export class ConnectionStoreClass {
                     case 'message':
                         GameStateStoreStore.brodcastMessage(data.data);
                         break;
+                    case 'entityUpdate':
+                        GameStateStoreStore.updateEntities(data.data, false);
+                        break;
                     case 'state':
                         console.log('state update from client');
                         break;
@@ -147,7 +150,7 @@ export class ConnectionStoreClass {
         connection.send({
             type,
             data,
-        })
+        }, false)
     }
 
     async join(id: string) {

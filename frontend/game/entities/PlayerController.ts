@@ -7,7 +7,7 @@ import { WorldStoreClass } from "@/stores/worldStore";
 import { vec2 } from "gl-matrix";
 import { Entity } from "./Entity";
 
-const PLAYER_SPEED = 2;
+const PLAYER_SPEED = 3;
 
 export class PlayerController extends Entity {
 
@@ -16,11 +16,12 @@ export class PlayerController extends Entity {
         name: 'character/1/walk-down',
         position: 0,
     };
+    static scale: number = 0.7;
 
     static instance(world, gameState, connection, data) {
         const instance = new PlayerController(
-            vec2.clone(data.position),
-            vec2.clone(data.rotation),
+            vec2.clone(new Float32Array(data.position)),
+            vec2.clone(new Float32Array(data.rotation)),
             world,
             gameState,
             connection,
@@ -31,7 +32,6 @@ export class PlayerController extends Entity {
     }
 
     inputs: Set<string> = new Set();
-    static scale: number = 0.5;
 
     constructor(
         position,
@@ -43,6 +43,7 @@ export class PlayerController extends Entity {
     ) {
         super(position, rotation, world, gameState, connection);
         console.log('playercontroller', JSON.stringify(player));
+        this.authority = player.id;
     }
 
     addInput(s: string) {

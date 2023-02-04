@@ -17,8 +17,8 @@ export class Entity {
 
     static instance(world, gameState, connection, data): any {
         const instance = new Entity(
-            vec2.clone(data.position),
-            vec2.clone(data.rotation),
+            vec2.clone(new Float32Array(data.position)),
+            vec2.clone(new Float32Array(data.rotation)),
             world,
             gameState,
             connection
@@ -26,6 +26,8 @@ export class Entity {
         instance.id = data.id;
         return instance;
     }
+
+    public authority;
 
     constructor(
         public position: vec2,
@@ -49,8 +51,9 @@ export class Entity {
         return {
             id: this.id,
             class: this.constructor.name,
-            position: [...this.position],
-            rotation: [...this.rotation],
+            authority: this.authority,
+            position: this.position,
+            rotation: this.rotation,
         }
     }
 }

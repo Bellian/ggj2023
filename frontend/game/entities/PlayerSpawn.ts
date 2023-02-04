@@ -10,8 +10,8 @@ export class PlayerSpawn extends Entity {
     };
     static instance(world, gameState, connection, data) {
         const instance = new PlayerSpawn(
-            vec2.clone(data.position),
-            vec2.clone(data.rotation),
+            vec2.clone(new Float32Array(data.position)),
+            vec2.clone(new Float32Array(data.rotation)),
             world,
             gameState,
             connection

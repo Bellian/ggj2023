@@ -17,7 +17,9 @@ import GameStateStoreContext, {
 } from '@/stores/gameStateStore';
 import { useRouter } from 'next/router';
 
-const TILE_SIZE = 100;
+import data from './level-1.data';
+
+const TILE_SIZE = 50;
 
 function initControlls() {
   function handleDown(ev: KeyboardEvent) {
@@ -57,19 +59,18 @@ export default observer(function Level1() {
   }, [connectionStore.type, gameStore.state?.state]);
 
   useEffect(() => {
-    wolrd.createWorld({
-      levels: spritedata,
-      width: 10,
-      height: 5,
-      entities: [
-        {
-          class: PlayerSpawn,
-          position: vec2.fromValues(5.5, 2.5),
-          rotation: vec2.create(),
-          args: [],
-        },
-      ],
-    });
+    wolrd.createWorld(
+      Object.assign(data, {
+        entities: [
+          {
+            class: PlayerSpawn,
+            position: vec2.fromValues(10, 3),
+            rotation: vec2.create(),
+            args: [],
+          },
+        ],
+      })
+    );
   }, []);
 
   if (!wolrd.tiles) {
