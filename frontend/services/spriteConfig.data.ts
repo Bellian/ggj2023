@@ -366,5 +366,19 @@ export const getSpriteConfig = [
   {
     name: 'default',
     size: { width: 100, height: 100 },
+    sprites: [
+      {
+        walkable: true,
+      },
+    ],
+  },
+  {
+    name: 'empty',
+    size: { width: 100, height: 100 },
+    sprites: [
+      {
+        walkable: true,
+      },
+    ],
   },
 ];

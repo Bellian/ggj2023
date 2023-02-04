@@ -14,6 +14,7 @@ export class MapEditorStoreClass {
       levels: observable,
       setSprite: action,
       generateSprites: action,
+      loadLevels: action,
     });
   }
 
@@ -31,6 +32,10 @@ export class MapEditorStoreClass {
           position: 0,
         });
       });
+  }
+
+  loadLevels(levels: Array<any>) {
+    this.levels = levels;
   }
 }
 

@@ -1,3 +1,8 @@
+import {
+  betterAddEventListener,
+  downloadObjectAsJson,
+  execFuncArray,
+} from '@/services/utils';
 import MapEditorStoreContext from '@/stores/mapEditorStore';
 import { Button, Dialog, MenuItem, Select } from '@mui/material';
 import { observer } from 'mobx-react';
@@ -30,15 +35,61 @@ const BuildField: FC<BuildFieldProps> = observer(
       position: 0,
     });
 
+    const [rightMouseDown, setRightMouseDown] = React.useState(false);
+
     useEffect(() => {
       mapState.generateSprites(
         playingFieldTotalAmountLevels,
         playingFieldTotalAmountElements
       );
+
+      const mousedownEvent = betterAddEventListener('mousedown', (event) => {
+        event.button === 2 && setRightMouseDown(true);
+      });
+      const mouseupEvent = betterAddEventListener('mouseup', (event) => {
+        event.button === 2 && setRightMouseDown(false);
+      });
+
+      return () => execFuncArray([mousedownEvent, mouseupEvent]);
     }, []);
 
     return (
       <div className={styles.BuildField}>
+        <Button
+          variant="contained"
+          onClick={() =>
+            downloadObjectAsJson(
+              JSON.parse(
+                JSON.stringify(mapState.levels).replace('default', 'empty')
+              ),
+              'buildFieldExport'
+            )
+          }
+          className={styles.BuildFieldDownload}
+        >
+          Download State
+        </Button>
+        <Button
+          onClick={() => {}}
+          className={styles.BuildFieldLoad}
+          variant="contained"
+          component="label"
+        >
+          Load State
+          <input
+            onChange={(event) => {
+              var reader = new FileReader();
+              reader.onload = () => {
+                console.log((event.target as any).result);
+
+                mapState.loadLevels(JSON.parse((event.target as any).result));
+              };
+              reader.readAsText(event.target.files[0]);
+            }}
+            type="file"
+            hidden
+          />
+        </Button>
         <Select
           value={activeLevel}
           label="Select Level"
@@ -92,6 +143,14 @@ const BuildField: FC<BuildFieldProps> = observer(
                     onContextMenu={(ev) => {
                       ev.preventDefault();
                       mapState.setSprite(activeLevel, lastSprite as any, index);
+                    }}
+                    onMouseOver={() => {
+                      rightMouseDown &&
+                        mapState.setSprite(
+                          activeLevel,
+                          lastSprite as any,
+                          index
+                        );
                     }}
                     key={index}
                   >
