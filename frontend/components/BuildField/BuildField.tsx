@@ -201,6 +201,7 @@ const RenderMap = observer(() => {
                   name={sprite.name}
                   elementSize={elementSize}
                   position={sprite.position}
+                  animation={300}
                 />
               </div>
             ))}

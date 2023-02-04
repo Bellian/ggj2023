@@ -1,70 +1,63 @@
-import React, { FC, useEffect, useRef, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import styles from './Sprite.module.scss';
-import { betterAddEventListener, getImageSize } from '../../services/utils';
-import { getSpriteConfig } from '../../services/spriteConfig.data';
+import SpriteItem, { SpriteItemProps } from '../SpriteItem/SpriteItem';
+import { getImageSize } from '@/services/utils';
+import SpriteData from '@/services/spriteData';
 
 interface SpriteProps {
   name: string;
   elementSize: { width: number; height: number };
   position: number;
+  animation?: number; // animation delay
 }
 
-const Sprite: FC<SpriteProps> = ({ name, elementSize, position }) => {
-  const spriteSelectorElement = useRef<any>();
-  const [naturalSize, setNaturalSize] = useState({ width: 0, height: 0 });
-  const [trueSpriteSheetSize, setTrueSpriteSheetSize] = useState({
-    width: 0,
-    height: 0,
-  });
-
-  const spriteConfig = getSpriteConfig.find((spriteConfigItem) => {
-    return spriteConfigItem.name === name;
-  }) as any;
-
-  if (!spriteConfig) {
-    throw 'define the config for this sprite you donkey!';
-  }
-
-  const spriteSize = {
-    width: spriteConfig.size.width,
-    height: spriteConfig.size.height,
-  };
+const Sprite: FC<SpriteProps> = ({
+  name,
+  elementSize,
+  position,
+  animation,
+}) => {
+  const [spriteData, setSpriteData] = useState(null as SpriteData);
 
   useEffect(() => {
-    getImageSize(name, (width, height) => {
-      setNaturalSize({
-        width,
-        height,
-      });
-      console.log();
-      setTrueSpriteSheetSize({
-        width: (elementSize.width / spriteSize.width) * width,
-        height: (elementSize.height / spriteSize.height) * height,
-      });
+    getImageSize(name, (width: number, height: number) => {
+      setSpriteData(new SpriteData(name, { width, height }, position));
     });
-  }, [position, name]);
+  }, [name]);
+
+  useEffect(() => {
+    if (!animation || !spriteData) return;
+
+    const animationInterval = setAnimationInterval(
+      animation,
+      setSpriteData,
+      spriteData
+    );
+
+    return () => clearInterval(animationInterval);
+  }, [spriteData]);
+
   return (
-    <div
-      ref={spriteSelectorElement}
-      className={styles.SpriteSelector}
-      style={{
-        backgroundImage: `url(/sprites/${name}.png)`,
-        backgroundPosition: `
-          -${(position * elementSize.width) % trueSpriteSheetSize.width}px
-          -${
-            ((position / (trueSpriteSheetSize.width / elementSize.width)) | 0) *
-            elementSize.height
-          }px`,
-        backgroundSize: `
-          ${trueSpriteSheetSize.width}px
-          ${trueSpriteSheetSize.height}px`,
-        width: `${elementSize.width}px`,
-        height: `${elementSize.height}px`,
-        imageRendering: 'pixelated',
-        backgroundRepeat: 'no-repeat',
-      }}
-    ></div>
+    <div className={styles.Sprite}>
+      {spriteData && (
+        <SpriteItem spriteData={spriteData} elementSize={elementSize} />
+      )}
+    </div>
   );
 };
 
 export default Sprite;
+
+function setAnimationInterval(
+  animation: number,
+  setSpriteData: Function,
+  spriteData: SpriteData
+) {
+  return setInterval(() => {
+    spriteData.position =
+      (spriteData.position + 1) % spriteData.spriteAmount.width | 0;
+    setSpriteData(
+      new SpriteData(spriteData.name, spriteData.imageSize, spriteData.position)
+    );
+  }, animation);
+}
