@@ -1,7 +1,7 @@
-import { vec2 } from "gl-matrix";
+import { vec2 } from 'gl-matrix';
 
 export function getMetadataFoSprite(name: string, position: number) {
-  return getSpriteConfig.find(e => e.name === name)?.sprites[position];
+  return getSpriteConfig.find((e) => e.name === name)?.sprites[position];
 }
 
 export interface IMetaData {
@@ -11,8 +11,10 @@ export interface IMetaData {
 
 export interface ISpriteSheetConfig {
   name: string;
-  size: { width: number, height: number },
+  size: { width: number; height: number };
   sprites: IMetaData[];
+  animated?: boolean;
+  direction?: vec2;
 }
 
 export const getSpriteConfig: ISpriteSheetConfig[] = [
