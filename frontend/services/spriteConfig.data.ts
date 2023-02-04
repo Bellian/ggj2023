@@ -1,4 +1,21 @@
-export const getSpriteConfig = [
+import { vec2 } from "gl-matrix";
+
+export function getMetadataFoSprite(name: string, position: number) {
+  return getSpriteConfig.find(e => e.name === name)?.sprites[position];
+}
+
+export interface IMetaData {
+  walkable?: boolean;
+  appliedForce?: vec2;
+}
+
+export interface ISpriteSheetConfig {
+  name: string;
+  size: { width: number, height: number },
+  sprites: IMetaData[];
+}
+
+export const getSpriteConfig: ISpriteSheetConfig[] = [
   {
     name: 'factory',
     size: { width: 16, height: 16 },
@@ -103,11 +120,11 @@ export const getSpriteConfig = [
       },
       {
         walkable: true,
-        appliedForce: [0, -1],
+        appliedForce: [0, 1],
       },
       {
         walkable: true,
-        appliedForce: [0, 1],
+        appliedForce: [0, -1],
       },
       {
         walkable: true,
@@ -138,23 +155,11 @@ export const getSpriteConfig = [
       },
       {
         walkable: true,
+        appliedForce: [0, 1],
+      },
+      {
+        walkable: true,
         appliedForce: [0, -1],
-      },
-      {
-        walkable: true,
-        appliedForce: [0, 1],
-      },
-      {
-        walkable: true,
-        appliedForce: [1, 0],
-      },
-      {
-        walkable: true,
-        appliedForce: [0, 1],
-      },
-      {
-        walkable: true,
-        appliedForce: [1, 0],
       },
       {
         walkable: true,
@@ -165,10 +170,22 @@ export const getSpriteConfig = [
         appliedForce: [0, -1],
       },
       {
-        walkable: false,
+        walkable: true,
+        appliedForce: [1, 0],
       },
       {
-        walkable: false,
+        walkable: true,
+        appliedForce: [1, 0],
+      },
+      {
+        walkable: true,
+        appliedForce: [0, 1],
+      },
+      {
+        walkable: true,
+      },
+      {
+        walkable: true,
       },
       // New Line 6
       {
@@ -188,20 +205,20 @@ export const getSpriteConfig = [
       },
       {
         walkable: true,
-        appliedForce: [0, 1],
-      },
-      {
-        walkable: false,
-      },
-      {
-        walkable: true,
         appliedForce: [0, -1],
       },
       {
         walkable: false,
       },
       {
-        walkable: false,
+        walkable: true,
+        appliedForce: [0, 1],
+      },
+      {
+        walkable: true,
+      },
+      {
+        walkable: true,
       },
       // New Line 7
       {
@@ -221,7 +238,7 @@ export const getSpriteConfig = [
       },
       {
         walkable: true,
-        appliedForce: [0, 1],
+        appliedForce: [0, -1],
       },
       {
         walkable: true,

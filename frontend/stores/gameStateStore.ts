@@ -1,9 +1,14 @@
+import { PlayerController } from "@/game/entities/PlayerController";
 import { isServer } from "@/helpers";
+import { glMatrix } from "gl-matrix";
 import { action, computed, makeObservable, observable } from "mobx";
+import { objectPrototype } from "mobx/dist/internal";
 import Peer, { DataConnection } from "peerjs";
 import { createContext } from "react";
+import { isFloat32Array, isFloat64Array } from "util/types";
 import { ConnectionStoreStore } from "./connectionStore";
 import { PersistStoreStore } from "./persistStore";
+import { WorldStoreStore } from "./worldStore";
 
 export interface IGameState {
     state: 'prepare' | 'started' | 'ended';
@@ -20,6 +25,7 @@ export interface IPlayer {
 }
 export interface IConfig {
     maxPlayers: number;
+    level: number;
 }
 
 
@@ -65,7 +71,8 @@ export class GameStateStoreClass {
             this.state = {
                 state: "prepare",
                 config: {
-                    maxPlayers: 4
+                    maxPlayers: 4,
+                    level: 1,
                 },
                 world: {},
                 players: [
@@ -77,13 +84,16 @@ export class GameStateStoreClass {
                 ],
                 entities: []
             }
+            this.interval = setInterval(() => {
+                if (!this.state?.state) {
+                    return;
+                }
+                if (this.state.state === 'started') {
+                    WorldStoreStore.update();
+                }
+                this.sync();
+            }, 30);
         }
-        this.interval = setInterval(() => {
-            if (!this.state?.state) {
-                return;
-            }
-            this.sync();
-        }, 30);
     }
 
     // server
@@ -138,12 +148,70 @@ export class GameStateStoreClass {
     }
 
     // player
-    getPlayer(name: string) {
-        return this.state.players.find(p => p.name === name);
+    getPlayer(id: string) {
+        return this.state.players.find(p => p.id === id);
+    }
+    getOwnPlayer() {
+        return this.getPlayer(ConnectionStoreStore.id);
+    }
+    getPlayerController(player: IPlayer) {
+        return WorldStoreStore.entities.find(e => e instanceof PlayerController && e.player.id === player.id) as PlayerController;
+    }
+    getOwnPlayerController() {
+        return this.getPlayerController(this.getOwnPlayer());
     }
 
-    setState(data: any) {
-        this.state = data;
+    setConfig<T extends keyof IConfig>(key: T, value: IConfig[T]) {
+        this.state.config[key] = value;
+    }
+
+    setState(data: IGameState) {
+        if (!this.state) {
+            this.state = data;
+            return;
+        }
+        debugger;
+        const { config, entities, players, state, world } = data;
+        Object.assign(this.state.config, config);
+        Object.assign(this.state.players, players);
+        this.state.state = state;
+        this.state.world ? Object.assign(this.state.world, world) : this.state.world = world;
+
+        const left = new Set(WorldStoreStore.entities || []);
+        entities?.forEach(entity => {
+            // check if entity exists
+            const foundEntity = WorldStoreStore.entities?.find(e => e.id === entity.id);
+            if (foundEntity) {
+                left.delete(foundEntity);
+                Object.keys(entity).forEach(key => {
+                    if (!foundEntity[key]) {
+                        foundEntity[key] = entity[key];
+                    } else if (foundEntity[key] instanceof glMatrix.ARRAY_TYPE || Array.isArray(foundEntity[key])) {
+                        // copy values
+                        if ((foundEntity[key] as any[]).length === entity[key].length) {
+                            for (let i = 0; i < (foundEntity[key] as any[]).length; i++) {
+                                (foundEntity[key] as any[])[i] = entity[key][i];
+                            }
+                        } else {
+                            foundEntity[key] = entity[key];
+                        }
+                    } else if (typeof entity[key] === 'object' && typeof foundEntity[key] === 'object') {
+                        // assign
+                        Object.assign(foundEntity[key], entity[key]);
+                    } else {
+                        // ovverride
+                        foundEntity[key] = entity[key];
+                    }
+                })
+            } else {
+                // create new entity
+                WorldStoreStore.createEntity(entity);
+            }
+        })
+        left.forEach(entity => {
+            WorldStoreStore.deleteEntity(entity);
+        });
+
     }
 
     sendMessage(message: string) {
@@ -158,8 +226,6 @@ export class GameStateStoreClass {
     addMessage(data: string) {
         this.messages.push(data);
     }
-
-
 
 }
 
