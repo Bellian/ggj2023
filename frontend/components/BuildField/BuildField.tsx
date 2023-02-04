@@ -39,6 +39,22 @@ const BuildField: FC<BuildFieldProps> = observer(
 
     return (
       <div className={styles.BuildField}>
+        <Select
+          value={activeLevel}
+          label="Select Level"
+          onChange={(event) => {
+            setActiveLevel(event.target.value as number);
+          }}
+          className={styles.BuildFieldSelect}
+        >
+          {Array(playingFieldTotalAmountLevels)
+            .fill(0)
+            .map((x, index) => (
+              <MenuItem value={index} key={index}>
+                {index}
+              </MenuItem>
+            ))}
+        </Select>
         <Dialog open={toolbarOpen}>
           <Toolbar
             onSelected={(spriteSheetName, spritePosition) => {
@@ -58,43 +74,39 @@ const BuildField: FC<BuildFieldProps> = observer(
             width: playingFieldWidthAmountElements * elementSize.width,
           }}
         >
-          {mapState.levels[activeLevel] &&
-            mapState.levels[activeLevel].map((sprite, index) => (
+          {mapState.levels.map((level, index) => {
+            return (
               <div
-                onClick={() => {
-                  setActiveIndex(index);
-                  setToolbarOpen(true);
-                }}
-                onContextMenu={(ev) => {
-                  ev.preventDefault();
-                  mapState.setSprite(activeLevel, lastSprite as any, index);
+                className={styles.BuildFieldLevel}
+                style={{
+                  pointerEvents: activeLevel === index ? 'initial' : 'none',
                 }}
                 key={index}
               >
-                <Sprite
-                  name={sprite.name}
-                  elementSize={elementSize}
-                  position={sprite.position}
-                  key={index}
-                />
+                {level.map((sprite, index) => (
+                  <div
+                    onClick={() => {
+                      setActiveIndex(index);
+                      setToolbarOpen(true);
+                    }}
+                    onContextMenu={(ev) => {
+                      ev.preventDefault();
+                      mapState.setSprite(activeLevel, lastSprite as any, index);
+                    }}
+                    key={index}
+                  >
+                    <Sprite
+                      name={sprite.name}
+                      elementSize={elementSize}
+                      position={sprite.position}
+                      key={index}
+                    />
+                  </div>
+                ))}
               </div>
-            ))}
+            );
+          })}
         </div>
-        <Select
-          value={activeLevel}
-          label="Select Level"
-          onChange={(event) => {
-            setActiveLevel(event.target.value as number);
-          }}
-        >
-          {Array(playingFieldTotalAmountElements)
-            .fill(0)
-            .map((x, index) => (
-              <MenuItem value={index} key={index}>
-                {index}
-              </MenuItem>
-            ))}
-        </Select>
       </div>
     );
   }
