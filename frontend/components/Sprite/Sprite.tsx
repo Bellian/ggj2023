@@ -15,7 +15,7 @@ const Sprite: FC<SpriteProps> = ({
   name,
   elementSize,
   position,
-  animation,
+  animation = 200,
 }) => {
   const [spriteData, setSpriteData] = useState(null as SpriteData);
 
@@ -26,7 +26,7 @@ const Sprite: FC<SpriteProps> = ({
   }, [name]);
 
   useEffect(() => {
-    if (!animation || !spriteData) return;
+    if (!spriteData?.spriteConfig?.animated || !spriteData) return;
 
     const animationInterval = setAnimationInterval(
       animation,

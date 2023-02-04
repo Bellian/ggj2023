@@ -8,7 +8,6 @@ export interface SpriteItemProps {
 }
 
 const SpriteItem: FC<SpriteItemProps> = ({ spriteData, elementSize }) => {
-  console.log('render sprite item', spriteData.position);
   return (
     <div
       className={styles.SpriteItem}
