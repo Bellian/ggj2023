@@ -163,7 +163,6 @@ const RenderMap = observer(() => {
         height: mapState.world.height * elementSize.height,
       }}
     >
-      <pre>{JSON.stringify(mapState.world.levels)}</pre>
       {mapState.world.levels.map((level, activeLevelIndex) => {
         return (
           <div
