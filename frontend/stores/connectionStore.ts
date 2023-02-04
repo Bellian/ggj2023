@@ -136,7 +136,7 @@ export class ConnectionStoreClass {
             const joined = GameStateStoreStore.playerJoin({
                 id: connection.peer,
                 name: connection.metadata.name,
-                skin: '',
+                skin: connection.metadata.skin,
             });
 
 
@@ -165,6 +165,7 @@ export class ConnectionStoreClass {
             this.connection = this.peer.connect(id, {
                 metadata: {
                     name: PersistStoreStore.name,
+                    skin: 'pig'
                 },
             });
         }))();

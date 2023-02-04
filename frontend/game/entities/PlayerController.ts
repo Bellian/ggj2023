@@ -13,19 +13,37 @@ const PLAYER_SPEED = 3;
 const SPRITES = {
     default: {
         up: {
-            name: 'character/1/walk-up',
+            name: 'character/person/up',
             position: 0,
         },
         down: {
-            name: 'character/1/walk-down',
+            name: 'character/person/down',
             position: 0,
         },
         left: {
-            name: 'character/1/walk-left',
+            name: 'character/person/left',
             position: 0,
         },
         right: {
-            name: 'character/1/walk-right',
+            name: 'character/person/right',
+            position: 0,
+        },
+    },
+    pig: {
+        up: {
+            name: 'character/pig/up',
+            position: 0,
+        },
+        down: {
+            name: 'character/pig/down',
+            position: 0,
+        },
+        left: {
+            name: 'character/pig/left',
+            position: 0,
+        },
+        right: {
+            name: 'character/pig/right',
             position: 0,
         },
     }
@@ -34,7 +52,7 @@ const SPRITES = {
 
 export class PlayerController extends Entity {
     static sprite = {
-        name: 'character/1/walk-down',
+        name: 'character/person/down',
         position: 0,
     };
     static scale: number = 0.7;
