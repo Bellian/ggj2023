@@ -1,4 +1,4 @@
-import SpriteData from '@/services/spriteData';
+import SpriteData from '@/services/SpriteData';
 import React, { FC } from 'react';
 import styles from './SpriteItem.module.scss';
 
