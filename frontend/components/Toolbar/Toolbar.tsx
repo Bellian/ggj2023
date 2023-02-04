@@ -3,15 +3,28 @@ import Sprite from '../Sprite/Sprite';
 import styles from './Toolbar.module.scss';
 import { getSpriteConfig } from '@/services/spriteConfig.data';
 import { getImageSize } from '@/services/utils';
+import { MapEditorStoreStore } from '@/stores/mapEditorStore';
 
-interface ToolbarProps {
-  onSelected: (spriteSheetName: string, spritePosition: number) => any;
-}
+interface ToolbarProps {}
 
-const Toolbar: FC<ToolbarProps> = ({ onSelected }) => {
+const Toolbar: FC<ToolbarProps> = () => {
   const [spriteSheetSizes, setSpriteSheetSizes] = useState(
     Array(getSpriteConfig.length).fill({ width: 0, height: 0 })
   );
+
+  const onSelected = (spriteSheetName, spritePosition) => {
+    const newSprite = {
+      name: spriteSheetName,
+      position: spritePosition,
+    };
+    MapEditorStoreStore.set('lastSprite', newSprite);
+    MapEditorStoreStore.setSprite(
+      MapEditorStoreStore.activeLevel,
+      newSprite,
+      MapEditorStoreStore.currentEditedSprite
+    );
+    MapEditorStoreStore.set('toolbarOpen', false);
+  };
 
   useEffect(() => {
     getSpriteConfig.forEach((spriteConfig, index) => {
@@ -36,7 +49,10 @@ const Toolbar: FC<ToolbarProps> = ({ onSelected }) => {
             )
           ).map((x, spriteIndex) => {
             return (
-              <div onClick={() => onSelected(spriteConfig.name, spriteIndex)}>
+              <div
+                key={spriteIndex}
+                onClick={() => onSelected(spriteConfig.name, spriteIndex)}
+              >
                 <Sprite
                   key={spriteSheetIndex + spriteIndex}
                   name={spriteConfig.name}

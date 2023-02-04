@@ -3,31 +3,27 @@
 
 .BuildFieldSelection {
   position: relative;
+  border: 20px solid #ff09ff;
 }
 
 .BuildFieldLevel {
   display: flex;
   flex-wrap: wrap;
-  position: absolute;
-  top: 0;
-  left: 0;
 }
 
-.BuildFieldSelect {
+.BuildFieldSelect,
+.BuildFieldInput {
   background: white;
+}
+
+.BuildFieldInput {
+  width: 100px;
+}
+
+.BuildFieldUtils {
   position: fixed;
   top: 20px;
   left: 20px;
-}
-
-.BuildFieldDownload {
-  position: fixed;
-  top: 20px;
-  left: 80px;
-}
-
-.BuildFieldLoad {
-  position: fixed;
-  top: 20px;
-  left: 250px;
+  display: flex;
+  gap: 20px;
 }
