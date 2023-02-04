@@ -83,6 +83,8 @@ export class WorldStoreClass {
     }
 
     instanceEntity(instance: Entity) {
+        console.log('instanceEntity', instance.desiredSprite);
+
         this.entities = this.entities || [];
         this.dynamicTiles = this.dynamicTiles || [];
         this.dynamicTiles.push({
@@ -102,6 +104,7 @@ export class WorldStoreClass {
     }
 
     createEntity(entity: any) {
+        console.log('createEntity', entity);
         // create entity
         let constructor: any = Entity;
         switch (entity.class) {

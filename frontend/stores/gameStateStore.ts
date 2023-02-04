@@ -133,7 +133,8 @@ export class GameStateStoreClass {
                 if (!client.open) {
                     return;
                 }
-                ConnectionStoreStore.sendMessage(client, 'state', this.state);
+                const state = Object.assign({}, this.state, { entities: WorldStoreStore.entities?.map(e => e.toJSON()) });
+                ConnectionStoreStore.sendMessage(client, 'state', state);
             });
         } else {
             const data = WorldStoreStore?.entities?.filter(e => e.authority === this.getOwnPlayer()?.id).map(e => e.toJSON());

@@ -24,6 +24,7 @@ export class Entity {
             connection
         );
         instance.id = data.id;
+        instance.desiredSprite = data.desiredSprite;
         return instance;
     }
 
@@ -56,9 +57,10 @@ export class Entity {
         if (!this.tile) {
             this.tile = this.world.dynamicTiles.find(tile => tile.entityID === this.id);
         }
-        if (this.tile && this.sprite[0] !== this.desiredSprite[0]) {
+        if (this.tile && (this.sprite[0].name !== this.desiredSprite[0].name || this.sprite[0].position !== this.desiredSprite[0].position)) {
             this.tile.sprite = this.desiredSprite[0];
             this.sprite[0] = this.desiredSprite[0];
+            console.log('update Sprite', this.id, this.sprite[0]);
         }
     }
 

@@ -51,10 +51,7 @@ const SPRITES = {
 
 
 export class PlayerController extends Entity {
-    static sprite = {
-        name: 'character/person/down',
-        position: 0,
-    };
+
     static scale: number = 0.7;
 
     static instance(world, gameState, connection, data) {
@@ -82,8 +79,16 @@ export class PlayerController extends Entity {
         public player: IPlayer,
     ) {
         super(position, rotation, world, gameState, connection);
-        console.log('playercontroller', JSON.stringify(player));
         this.authority = player.id;
+
+        const skin = SPRITES[player?.skin] || SPRITES.default;
+        this.desiredSprite = [skin.down];
+        this.sprite = [skin.down];
+    }
+
+    getSprite() {
+        const skin = SPRITES[this.player?.skin] || SPRITES.default;
+        return skin.down;
     }
 
     addInput(s: string) {
@@ -95,10 +100,10 @@ export class PlayerController extends Entity {
     }
 
     tick(delta: number) {
+        super.tick(delta);
         if (this.gameState.getOwnPlayerController() !== this) {
             return;
         }
-        super.tick(delta);
         const speed = PLAYER_SPEED * delta;
         vec2.set(this.rotation, 0, 0);
 
