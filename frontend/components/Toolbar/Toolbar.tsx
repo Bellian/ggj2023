@@ -42,10 +42,12 @@ const Toolbar: FC<ToolbarProps> = () => {
           spriteSheetSizes[spriteSheetIndex] &&
           Array.from(
             Array(
-              (spriteSheetSizes[spriteSheetIndex].width /
-                spriteConfig.size.width) *
-                (spriteSheetSizes[spriteSheetIndex].height /
-                  spriteConfig.size.height)
+              spriteConfig.animated
+                ? 1
+                : (spriteSheetSizes[spriteSheetIndex].width /
+                    spriteConfig.size.width) *
+                    (spriteSheetSizes[spriteSheetIndex].height /
+                      spriteConfig.size.height)
             )
           ).map((x, spriteIndex) => {
             return (
