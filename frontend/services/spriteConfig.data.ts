@@ -381,4 +381,78 @@ export const getSpriteConfig = [
       },
     ],
   },
+  {
+    name: 'character/1/walk',
+    size: { width: 16, height: 16 },
+    sprites: [
+      // New Line 1
+      {
+        frame: 1,
+        direction: [0, -1],
+      },
+      {
+        frame: 1,
+        direction: [0, 1],
+      },
+      {
+        frame: 1,
+        direction: [1, 0],
+      },
+      {
+        frame: 1,
+        direction: [-1, 0],
+      },
+      // New Line 2
+      {
+        frame: 2,
+        direction: [0, -1],
+      },
+      {
+        frame: 2,
+        direction: [0, 1],
+      },
+      {
+        frame: 2,
+        direction: [1, 0],
+      },
+      {
+        frame: 2,
+        direction: [-1, 0],
+      },
+      // New Line 3
+      {
+        frame: 3,
+        direction: [0, -1],
+      },
+      {
+        frame: 3,
+        direction: [0, 1],
+      },
+      {
+        frame: 3,
+        direction: [1, 0],
+      },
+      {
+        frame: 3,
+        direction: [-1, 0],
+      },
+      // New Line 4
+      {
+        frame: 4,
+        direction: [0, -1],
+      },
+      {
+        frame: 4,
+        direction: [0, 1],
+      },
+      {
+        frame: 4,
+        direction: [1, 0],
+      },
+      {
+        frame: 4,
+        direction: [-1, 0],
+      },
+    ],
+  },
 ];
