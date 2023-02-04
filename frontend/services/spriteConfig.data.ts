@@ -629,4 +629,15 @@ export const getSpriteConfig: ISpriteSheetConfig[] = [
       { walkable: true, appliedForce: [0, -1] },
     ],
   },
+  {
+    name: 'animations/box',
+    size: { width: 16, height: 16 },
+    animated: true,
+    sprites: [
+      { walkable: true },
+      { walkable: true },
+      { walkable: true },
+      { walkable: true },
+    ],
+  },
 ];

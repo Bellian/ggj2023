@@ -17,6 +17,7 @@ import PersistStoreContext from '@/stores/persistStore';
 import GameStateStoreContext, {
   GameStateStoreStore,
 } from '@/stores/gameStateStore';
+import Music from '@/components/Music/Music';
 
 export default observer(function Home() {
   const connectionStore = useContext(ConnectionStoreContext);
@@ -43,6 +44,7 @@ export default observer(function Home() {
 
   return (
     <>
+      <Music />
       <Grid container justifyContent={'center'} gap={2} padding={2}>
         <Grid item flexGrow={0}>
           <Paper>
