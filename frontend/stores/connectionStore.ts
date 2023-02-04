@@ -39,9 +39,11 @@ export class ConnectionStoreClass {
             const { Peer } = require("peerjs");
 
             this.peer = new (Peer as typeof Peer)(id, {
-                host: "176.9.184.83",
-                port: 9000,
+                host: "ggj2023.idhren.com",
+                port: 443,
                 path: "/",
+                secure: true,
+
             }) as Peer;
 
             this.peer.on('open', (id) => {
