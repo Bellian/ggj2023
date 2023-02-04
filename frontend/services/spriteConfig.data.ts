@@ -382,77 +382,31 @@ export const getSpriteConfig = [
     ],
   },
   {
-    name: 'character/1/walk',
+    name: 'character/1/walk-up',
     size: { width: 16, height: 16 },
-    sprites: [
-      // New Line 1
-      {
-        frame: 1,
-        direction: [0, -1],
-      },
-      {
-        frame: 1,
-        direction: [0, 1],
-      },
-      {
-        frame: 1,
-        direction: [1, 0],
-      },
-      {
-        frame: 1,
-        direction: [-1, 0],
-      },
-      // New Line 2
-      {
-        frame: 2,
-        direction: [0, -1],
-      },
-      {
-        frame: 2,
-        direction: [0, 1],
-      },
-      {
-        frame: 2,
-        direction: [1, 0],
-      },
-      {
-        frame: 2,
-        direction: [-1, 0],
-      },
-      // New Line 3
-      {
-        frame: 3,
-        direction: [0, -1],
-      },
-      {
-        frame: 3,
-        direction: [0, 1],
-      },
-      {
-        frame: 3,
-        direction: [1, 0],
-      },
-      {
-        frame: 3,
-        direction: [-1, 0],
-      },
-      // New Line 4
-      {
-        frame: 4,
-        direction: [0, -1],
-      },
-      {
-        frame: 4,
-        direction: [0, 1],
-      },
-      {
-        frame: 4,
-        direction: [1, 0],
-      },
-      {
-        frame: 4,
-        direction: [-1, 0],
-      },
-    ],
+    direction: [0, 1],
+    animated: true,
+    sprites: [{}, {}, {}, {}],
+  },
+  {
+    name: 'character/1/walk-right',
+    size: { width: 16, height: 16 },
+    direction: [1, 0],
+    animated: true,
+    sprites: [{}, {}, {}, {}],
+  },
+  {
+    name: 'character/1/walk-down',
+    size: { width: 16, height: 16 },
+    direction: [0, -1],
+    animated: true,
+    sprites: [{}, {}, {}, {}],
+  },
+  {
+    name: 'character/1/walk-left',
+    size: { width: 16, height: 16 },
+    direction: [-1, 0],
+    animated: true,
+    sprites: [{}, {}, {}, {}],
   },
 ];
