@@ -1,5 +1,6 @@
 import Sprite from '@/components/Sprite/Sprite';
 import { ITile } from '@/stores/worldStore';
+import { vec2 } from 'gl-matrix';
 import { observer } from 'mobx-react';
 import { useEffect, useState } from 'react';
 import styles from './Tile.module.scss';
@@ -13,6 +14,9 @@ interface TileRendererParams {
 export const TileRenderer = observer(
   ({ tile, tilesize, dynamic }: TileRendererParams) => {
     const [s, setS] = useState(0);
+
+    const dir = vec2.normalize(vec2.create(), tile.direction);
+    const rotation = (Math.atan2(dir[1], dir[0]) * 180) / Math.PI;
 
     useEffect(() => {
       setTimeout(() => {
@@ -29,6 +33,7 @@ export const TileRenderer = observer(
           left: tile.position[0] * tilesize,
           top: tile.position[1] * tilesize,
           zIndex: tile.level,
+          transform: `rotate(${rotation}deg)`,
         }}
       >
         <Sprite

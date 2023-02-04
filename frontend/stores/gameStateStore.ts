@@ -131,15 +131,12 @@ export class GameStateStoreClass {
         if (isServer()) {
             ConnectionStoreStore.clients.forEach((client) => {
                 if (!client.open) {
-                    console.log('no sync');
                     return;
                 }
-                console.log('sync');
                 ConnectionStoreStore.sendMessage(client, 'state', this.state);
             });
         } else {
             const data = WorldStoreStore?.entities?.filter(e => e.authority === this.getOwnPlayer()?.id).map(e => e.toJSON());
-            console.log('update', data);
             ConnectionStoreStore.connection.send({
                 type: 'entityUpdate',
                 data

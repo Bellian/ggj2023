@@ -134,6 +134,7 @@ export class WorldStoreClass {
         const now = performance.now();
         const delta = (now - this.last) / 1000;
         this.entities.forEach(e => e.tick(delta));
+        this.entities.forEach(e => e.updateSprite());
         this.last = now;
     }
 

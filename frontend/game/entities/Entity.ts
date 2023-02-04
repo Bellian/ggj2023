@@ -1,7 +1,7 @@
 import { ConnectionStoreClass } from "@/stores/connectionStore";
 import { GameStateStoreClass } from "@/stores/gameStateStore";
 import { ISpriteInterface } from "@/stores/mapEditorStore";
-import { WorldStoreClass, WorldStoreStore } from "@/stores/worldStore";
+import { ITile, WorldStoreClass, WorldStoreStore } from "@/stores/worldStore";
 import { vec2 } from "gl-matrix";
 
 let ENTITY_ID = 0;
@@ -28,6 +28,9 @@ export class Entity {
     }
 
     public authority;
+    public desiredSprite
+    public sprite
+    tile: ITile;
 
     constructor(
         public position: vec2,
@@ -36,6 +39,8 @@ export class Entity {
         public gameState: GameStateStoreClass,
         public connection: ConnectionStoreClass,
     ) {
+        this.desiredSprite = [this.getSprite()];
+        this.sprite = [this.getSprite()];
     }
 
     getSprite() {
@@ -47,6 +52,16 @@ export class Entity {
 
     tick(delta: number) { }
 
+    updateSprite() {
+        if (!this.tile) {
+            this.tile = this.world.dynamicTiles.find(tile => tile.entityID === this.id);
+        }
+        if (this.tile && this.sprite[0] !== this.desiredSprite[0]) {
+            this.tile.sprite = this.desiredSprite[0];
+            this.sprite[0] = this.desiredSprite[0];
+        }
+    }
+
     toJSON() {
         return {
             id: this.id,
@@ -54,6 +69,7 @@ export class Entity {
             authority: this.authority,
             position: this.position,
             rotation: this.rotation,
+            desiredSprite: this.desiredSprite,
         }
     }
 }

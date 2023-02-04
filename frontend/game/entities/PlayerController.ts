@@ -3,15 +3,36 @@
 import { isServer } from "@/helpers";
 import { ConnectionStoreClass } from "@/stores/connectionStore";
 import { GameStateStoreClass, IPlayer } from "@/stores/gameStateStore";
-import { WorldStoreClass } from "@/stores/worldStore";
+import { ISpriteInterface } from "@/stores/mapEditorStore";
+import { ITile, WorldStoreClass } from "@/stores/worldStore";
 import { vec2 } from "gl-matrix";
 import { Entity } from "./Entity";
 
 const PLAYER_SPEED = 3;
 
+const SPRITES = {
+    default: {
+        up: {
+            name: 'character/1/walk-up',
+            position: 0,
+        },
+        down: {
+            name: 'character/1/walk-down',
+            position: 0,
+        },
+        left: {
+            name: 'character/1/walk-left',
+            position: 0,
+        },
+        right: {
+            name: 'character/1/walk-right',
+            position: 0,
+        },
+    }
+}
+
+
 export class PlayerController extends Entity {
-
-
     static sprite = {
         name: 'character/1/walk-down',
         position: 0,
@@ -32,6 +53,7 @@ export class PlayerController extends Entity {
     }
 
     inputs: Set<string> = new Set();
+    tile: ITile;
 
     constructor(
         position,
@@ -60,19 +82,28 @@ export class PlayerController extends Entity {
         }
         super.tick(delta);
         const speed = PLAYER_SPEED * delta;
+        vec2.set(this.rotation, 0, 0);
 
         this.inputs.forEach(i => {
             switch (i) {
                 case 'w':
+                    this.setSprite('up');
+                    //vec2.add(this.rotation, this.rotation, [0, 1]);
                     return this.world.isWalkable(this.position[0], this.position[1] - speed, this.getScale()) &&
                         vec2.add(this.position, this.position, vec2.fromValues(0, -speed));
                 case 's':
+                    this.setSprite('down');
+                    //vec2.add(this.rotation, this.rotation, [0, -1]);
                     return this.world.isWalkable(this.position[0], this.position[1] + speed, this.getScale()) &&
                         vec2.add(this.position, this.position, vec2.fromValues(0, speed));
                 case 'a':
+                    this.setSprite('left');
+                    //vec2.add(this.rotation, this.rotation, [-1, 0]);
                     return this.world.isWalkable(this.position[0] - speed, this.position[1], this.getScale()) &&
                         vec2.add(this.position, this.position, vec2.fromValues(-speed, 0));
                 case 'd':
+                    this.setSprite('right');
+                    //vec2.add(this.rotation, this.rotation, [1, 0]);
                     return this.world.isWalkable(this.position[0] + speed, this.position[1], this.getScale()) &&
                         vec2.add(this.position, this.position, vec2.fromValues(speed, 0));
             }
@@ -88,9 +119,14 @@ export class PlayerController extends Entity {
         });
     }
 
+    setSprite(sprite: string) {
+        const skin = SPRITES[this.player.skin] || SPRITES.default;
+        this.desiredSprite[0] = skin[sprite];
+    }
+
     toJSON() {
         return Object.assign(super.toJSON(), {
-            player: this.player,
+            player: this.player
         });
     }
 }
