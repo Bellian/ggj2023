@@ -51,6 +51,9 @@ const EntityToolbar: FC<EntityToolbarProps> = () => {
         <MenuItem value="tunnel-out">PackageSpawner (TunnelOut)</MenuItem>
         <MenuItem value="slap-pig">Piggie (pig)</MenuItem>
         <MenuItem value="energy-controller">Reader (EnergyController)</MenuItem>
+        <MenuItem value="power-controller">
+          Encrypter (PowerController)
+        </MenuItem>
         <MenuItem value="text-spawner">TextSpawner</MenuItem>
         <MenuItem value="box">Box</MenuItem>
         <MenuItem value="crusher">Crusher</MenuItem>
@@ -66,7 +69,6 @@ const EntityToolbar: FC<EntityToolbarProps> = () => {
         </MenuItem>
         <MenuItem value="observation-tower">ObservationTower</MenuItem>
         <MenuItem value="pcbchip">Pcbchip</MenuItem>
-        <MenuItem value="power-controller">PowerController</MenuItem>
         <MenuItem value="powerplant-small">PowerplantSmall</MenuItem>
         <MenuItem value="powerplant-tall">PowerplantTall</MenuItem>
         <MenuItem value="power-pole">PowerPole</MenuItem>
