@@ -48,7 +48,7 @@ const EntityToolbar: FC<EntityToolbarProps> = () => {
         <MenuItem value="text-spawner">TextSpawner</MenuItem>
         <MenuItem value="box">Box</MenuItem>
         <MenuItem value="crusher">Crusher</MenuItem>
-        <MenuItem value="compactor">Compactor</MenuItem>
+        <MenuItem value="compactor">Compressor (Compactor)</MenuItem>
         <MenuItem value="cutter">Cutter</MenuItem>
         <MenuItem value="drill">Drill</MenuItem>
         <MenuItem value="energy-controller">EnergyController</MenuItem>
