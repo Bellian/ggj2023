@@ -83,7 +83,7 @@ export class GameStateStoreClass {
                     {
                         id: ConnectionStoreStore.id,
                         name: PersistStoreStore.name,
-                        skin: ''
+                        skin: PersistStoreStore.skin,
                     }
                 ],
                 entities: []

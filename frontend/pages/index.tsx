@@ -12,6 +12,8 @@ import {
   TextField,
   Button,
   createTheme,
+  Select,
+  MenuItem,
 } from '@mui/material';
 import { useRouter } from 'next/router';
 import PersistStoreContext from '@/stores/persistStore';
@@ -24,6 +26,7 @@ import Video from '@/components/Video/Video';
 export default observer(function Home() {
   const connectionStore = useContext(ConnectionStoreContext);
   const persistenceStore = useContext(PersistStoreContext);
+  const gameStore = useContext(GameStateStoreContext);
   const router = useRouter();
 
   useEffect(() => {
@@ -78,8 +81,22 @@ export default observer(function Home() {
                 name="playerName"
                 placeholder="Player Name"
                 label="Player Name"
-                sx={{ flexGrow: 1 }}
+                sx={{ flexGrow: 1, marginBottom: 4 }}
               ></TextField>
+
+              <Select
+                sx={{ flexGrow: 1, marginBottom: 4 }}
+                onChange={(ev) => {
+                  persistenceStore.set('skin', ev.target.value);
+                }}
+                defaultValue={persistenceStore.skin || 'default'}
+                SelectDisplayProps={{
+                  style: { paddingTop: 8, paddingBottom: 8 },
+                }}
+              >
+                <MenuItem value="default">Default</MenuItem>
+                <MenuItem value="pig">Pig</MenuItem>
+              </Select>
             </Box>
           </Paper>
         </Grid>
