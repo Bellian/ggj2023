@@ -116,5 +116,5 @@ export default {
     { class: 'tunnel-out', position: [3, 5], args: [] },
     { class: 'player-spawner', position: [7, 8], args: [] },
   ],
-  difficulty: 0,
+  difficulty: 2,
 };

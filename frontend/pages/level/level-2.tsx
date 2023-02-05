@@ -16,7 +16,8 @@ import {
   translateData,
 } from '@/helpers/translateData';
 
-import data from '../../services/levels/intro.data';
+import data from '../../services/levels/small.data';
+import Score from '@/game/assets/Score';
 
 const TILE_SIZE = 80;
 
@@ -42,19 +43,22 @@ export default observer(function Level1() {
   }
 
   return (
-    <div className={styles.world}>
-      <div
-        className={styles.worldBase}
-        style={{
-          width: TILE_SIZE * wolrd.worldInfo.width,
-          height: TILE_SIZE * wolrd.worldInfo.height,
-        }}
-      >
-        <Camera>
-          <StaticTiles tilesize={TILE_SIZE}></StaticTiles>
-          <DynamicTiles tilesize={TILE_SIZE}></DynamicTiles>
-        </Camera>
+    <>
+      <Score></Score>
+      <div className={styles.world}>
+        <div
+          className={styles.worldBase}
+          style={{
+            width: TILE_SIZE * wolrd.worldInfo.width,
+            height: TILE_SIZE * wolrd.worldInfo.height,
+          }}
+        >
+          <Camera>
+            <StaticTiles tilesize={TILE_SIZE}></StaticTiles>
+            <DynamicTiles tilesize={TILE_SIZE}></DynamicTiles>
+          </Camera>
+        </div>
       </div>
-    </div>
+    </>
   );
 });
