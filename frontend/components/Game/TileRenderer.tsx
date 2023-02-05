@@ -35,6 +35,8 @@ export const TileRenderer = observer(
           zIndex: tile.level,
           width: tilesize,
           height: tilesize,
+          contain: dynamic ? 'initial' : undefined,
+          contentVisibility: dynamic ? 'initial' : undefined,
         }}
       >
         <div

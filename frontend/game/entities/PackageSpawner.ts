@@ -5,7 +5,7 @@ import { Entity } from "./Entity";
 import { Package } from "./Package";
 
 
-const PACKAGE_SPAWN_RATE = 0.02;
+const PACKAGE_SPAWN_RATE = 0.2;
 let PORT_ID = 0;
 
 export class PackageSpawner extends Entity {
@@ -13,6 +13,7 @@ export class PackageSpawner extends Entity {
         name: 'animations/fastlane',
         position: 0,
     };
+    static className = 'PackageSpawner';
     static instance(world, gameState, connection, data) {
         const instance = new PackageSpawner(
             vec2.clone(new Float32Array(data.position)),
@@ -36,19 +37,22 @@ export class PackageSpawner extends Entity {
     ) {
         super(position, rotation, world, gameState, connection);
 
-        this.tileMeta = {
-            label: 'Port ' + this.portId,
-        }
+        this.proximityText = 'Port ' + this.portId;
     }
 
     tick(delta: number): void {
+        super.tick(delta);
         if (isServer()) {
-            if (Math.random() / delta < PACKAGE_SPAWN_RATE) {
-                console.log('spawn package');
 
-                this.world.instanceEntity(
-                    new Package(vec2.clone(this.position), vec2.create(), this.world, this.gameState, this.connection)
-                );
+            if (Math.random() / delta < PACKAGE_SPAWN_RATE) {
+                const packages = this.getEntitiesInRange(0.5, Package);
+                if (packages.length === 0) {
+                    console.log('spawn package');
+
+                    this.world.instanceEntity(
+                        new Package(vec2.clone(this.position), vec2.create(), this.world, this.gameState, this.connection)
+                    );
+                }
             }
         }
     }

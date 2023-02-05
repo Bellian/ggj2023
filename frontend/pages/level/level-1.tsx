@@ -20,6 +20,8 @@ import { useRouter } from 'next/router';
 import data from '../../services/level-1.data';
 import { PackageSpawner } from '@/game/entities/PackageSpawner';
 import Camera from '@/game/assets/camera';
+import { PackageReader } from '@/game/entities/PackageReader';
+import { PackageCompressor } from '@/game/entities/PackageCompressor';
 
 const TILE_SIZE = 80;
 
@@ -80,6 +82,24 @@ export default observer(function Level1() {
             class: PackageSpawner,
             position: vec2.fromValues(2, 3),
             rotation: vec2.fromValues(0, -1),
+            args: [],
+          },
+          {
+            class: PackageReader,
+            position: vec2.fromValues(10, 5),
+            rotation: vec2.fromValues(0, 0),
+            args: [],
+          },
+          {
+            class: PackageCompressor,
+            position: vec2.fromValues(10, 8),
+            rotation: vec2.fromValues(0, 0),
+            args: [],
+          },
+          {
+            class: PackageCompressor,
+            position: vec2.fromValues(12, 8),
+            rotation: vec2.fromValues(0, 0),
             args: [],
           },
         ],
