@@ -28,6 +28,7 @@ export function translateData(data: any) {
           break;
         case 'storage':
           e.class = PackageVirusScanner;
+          console.log('found virus scanner (storage)');
           break;
       }
       return e;

@@ -26,7 +26,13 @@ export interface ISettableMapEditorElements {
 }
 
 export class MapEditorStoreClass {
-  world: IWorldInfo = { levels: [[]], width: 1, height: 1, entities: [] };
+  world: IWorldInfo = {
+    levels: [[]],
+    width: 1,
+    height: 1,
+    entities: [],
+    difficulty: 0,
+  };
 
   toolbarOpen = false;
   entityToolbarOpen = false;
@@ -86,6 +92,10 @@ export class MapEditorStoreClass {
   setPlayingFieldWidth(width: number) {
     this.world.width = width;
     this.generateSprites();
+  }
+
+  setDifficulty(difficulty: number) {
+    this.world.difficulty = difficulty;
   }
 }
 

@@ -45,10 +45,13 @@ const EntityToolbar: FC<EntityToolbarProps> = () => {
         className={styles.EntityToolbarSelect}
       >
         <MenuItem value="player-spawner">PlayerSpawner</MenuItem>
+        <MenuItem value="compactor">Compressor (Compactor)</MenuItem>
+        <MenuItem value="storage">Virus Scanner (Storage)</MenuItem>
+        <MenuItem value="tunnel-in">PackageSpawner (TunnelIn)</MenuItem>
+        <MenuItem value="tunnel-out">PackageSpawner (TunnelOut)</MenuItem>
         <MenuItem value="text-spawner">TextSpawner</MenuItem>
         <MenuItem value="box">Box</MenuItem>
         <MenuItem value="crusher">Crusher</MenuItem>
-        <MenuItem value="compactor">Compressor (Compactor)</MenuItem>
         <MenuItem value="cutter">Cutter</MenuItem>
         <MenuItem value="drill">Drill</MenuItem>
         <MenuItem value="energy-controller">EnergyController</MenuItem>
@@ -71,8 +74,6 @@ const EntityToolbar: FC<EntityToolbarProps> = () => {
         <MenuItem value="saw-vertical">SawVertical</MenuItem>
         <MenuItem value="solar-pannel">SolarPannel</MenuItem>
         <MenuItem value="storage-tile">StorageTile</MenuItem>
-        <MenuItem value="tunnel-in">PackageSpawner (TunnelIn)</MenuItem>
-        <MenuItem value="tunnel-out">PackageSpawner (TunnelOut)</MenuItem>
       </Select>
       <TextField
         value={textData}

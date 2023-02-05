@@ -129,6 +129,16 @@ const Utils = observer(() => {
           mapState.setPlayingFieldLevels(+event.target.value)
         }
       />
+      <TextField
+        className={styles.BuildFieldInput}
+        label="Difficulty"
+        variant="filled"
+        type="number"
+        value={mapState.world.difficulty}
+        onChange={(event) => {
+          mapState.setDifficulty(+event.target.value);
+        }}
+      />
     </div>
   );
 });
