@@ -50,12 +50,12 @@ const EntityToolbar: FC<EntityToolbarProps> = () => {
         <MenuItem value="tunnel-in">PackageSpawner (TunnelIn)</MenuItem>
         <MenuItem value="tunnel-out">PackageSpawner (TunnelOut)</MenuItem>
         <MenuItem value="slap-pig">Piggie (pig)</MenuItem>
+        <MenuItem value="energy-controller">Reader (EnergyController)</MenuItem>
         <MenuItem value="text-spawner">TextSpawner</MenuItem>
         <MenuItem value="box">Box</MenuItem>
         <MenuItem value="crusher">Crusher</MenuItem>
         <MenuItem value="cutter">Cutter</MenuItem>
         <MenuItem value="drill">Drill</MenuItem>
-        <MenuItem value="energy-controller">EnergyController</MenuItem>
         <MenuItem value="furnace">Furnace</MenuItem>
         <MenuItem value="garage">Garage</MenuItem>
         <MenuItem value="green-cactory">GreenFactory</MenuItem>
