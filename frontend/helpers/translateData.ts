@@ -1,6 +1,7 @@
 import { PackageCompressor } from '@/game/entities/PackageCompressor';
 import { PackageEncryptor } from '@/game/entities/PackageEncryptor';
 import { PackageReader } from '@/game/entities/PackageReader';
+import { PackageSlapPig } from '@/game/entities/PackageSlapPig';
 import { PackageSpawner } from '@/game/entities/PackageSpawner';
 import { PackageVirusScanner } from '@/game/entities/PackageVirusScanner';
 import { PlayerSpawn } from '@/game/entities/PlayerSpawn';
@@ -29,11 +30,13 @@ export function translateData(data: any) {
           break;
         case 'storage':
           e.class = PackageVirusScanner;
-          console.log('found virus scanner (storage)');
           break;
         case 'power-controller':
           e.class = PackageEncryptor;
-          console.log('found package encryptor');
+          break;
+        case 'slap-pig':
+          e.class = PackageSlapPig;
+          console.log('found package PackageSlapPig');
           break;
       }
       return e;

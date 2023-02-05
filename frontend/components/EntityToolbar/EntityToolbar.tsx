@@ -49,6 +49,7 @@ const EntityToolbar: FC<EntityToolbarProps> = () => {
         <MenuItem value="storage">Virus Scanner (Storage)</MenuItem>
         <MenuItem value="tunnel-in">PackageSpawner (TunnelIn)</MenuItem>
         <MenuItem value="tunnel-out">PackageSpawner (TunnelOut)</MenuItem>
+        <MenuItem value="slap-pig">Piggie (pig)</MenuItem>
         <MenuItem value="text-spawner">TextSpawner</MenuItem>
         <MenuItem value="box">Box</MenuItem>
         <MenuItem value="crusher">Crusher</MenuItem>

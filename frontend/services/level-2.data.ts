@@ -3348,6 +3348,11 @@ export default {
       position: [8, 12],
       args: [],
     },
+    {
+      class: 'slap-pig',
+      position: [8, 5],
+      args: [],
+    },
   ],
   difficulty: 2,
 };

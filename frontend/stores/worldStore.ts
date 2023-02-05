@@ -3,6 +3,7 @@ import { Package } from '@/game/entities/Package';
 import { PackageCompressor } from '@/game/entities/PackageCompressor';
 import { PackageEncryptor } from '@/game/entities/PackageEncryptor';
 import { PackageReader } from '@/game/entities/PackageReader';
+import { PackageSlapPig } from '@/game/entities/PackageSlapPig';
 import { PackageSpawner } from '@/game/entities/PackageSpawner';
 import { PackageTarget } from '@/game/entities/PackageTarget';
 import { PackageVirusScanner } from '@/game/entities/PackageVirusScanner';
@@ -164,6 +165,10 @@ export class WorldStoreClass {
       case PackageEncryptor.name:
         constructor = PackageEncryptor;
         break;
+      case PackageSlapPig.name:
+        constructor = PackageSlapPig;
+        break;
+
       default:
         throw new Error('Unknown entity type' + entity.class);
     }
