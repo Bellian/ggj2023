@@ -35,7 +35,14 @@ export default observer(function Host() {
 
   return (
     <>
-      <Paper>
+      <Paper
+        sx={{ flexGrow: 1 }}
+        style={{
+          border: '6px solid #781d4f',
+          borderRadius: '3px',
+          background: '#ffecec',
+        }}
+      >
         <Box padding={3} maxWidth={600} width={'98vw'}>
           <h3>{isServer() ? 'Host Game:' : 'Join Game:'}</h3>
 

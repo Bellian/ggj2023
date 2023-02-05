@@ -5,6 +5,7 @@ import { PackageSlapPig } from '@/game/entities/PackageSlapPig';
 import { PackageSpawner } from '@/game/entities/PackageSpawner';
 import { PackageVirusScanner } from '@/game/entities/PackageVirusScanner';
 import { PlayerSpawn } from '@/game/entities/PlayerSpawn';
+import { GameStateStoreStore } from '@/stores/gameStateStore';
 import { vec2 } from 'gl-matrix';
 
 export function translateData(data: any) {
@@ -43,4 +44,39 @@ export function translateData(data: any) {
     })
     .filter((e) => typeof e.class !== 'string');
   return data;
+}
+
+
+export function initControlls() {
+  function handleDown(ev: KeyboardEvent) {
+    ev.preventDefault();
+    const player = GameStateStoreStore.getOwnPlayerController();
+    player.addInput(ev.key);
+  }
+  function handleUp(ev: KeyboardEvent) {
+    const player = GameStateStoreStore.getOwnPlayerController();
+    player.removeInput(ev.key);
+  }
+
+  window.addEventListener('keydown', handleDown);
+  window.addEventListener('keyup', handleUp);
+
+  return () => {
+    window.removeEventListener('keydown', handleDown);
+    window.removeEventListener('keyup', handleUp);
+  };
+}
+
+export function routeLevel(connectionStore, router, gameStore) {
+  return function () {
+    if (connectionStore.type === 'none') {
+      router.push('/');
+    }
+    if (!gameStore.state?.state) {
+      router.push('/');
+    }
+    if (gameStore.state?.state === 'ended') {
+      router.push('/end');
+    }
+  }
 }
