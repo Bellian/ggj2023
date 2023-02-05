@@ -104,7 +104,7 @@ export class Entity {
     toJSON() {
         return {
             id: this.id,
-            class: this.constructor.name,
+            class: (this.constructor as any).className,
             authority: this.authority,
             position: this.position,
             rotation: this.rotation,

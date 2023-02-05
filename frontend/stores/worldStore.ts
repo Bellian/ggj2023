@@ -138,34 +138,34 @@ export class WorldStoreClass {
     // create entity
     let constructor: any = Entity;
     switch (entity.class) {
-      case PlayerSpawn.name:
+      case PlayerSpawn.className:
         constructor = PlayerSpawn;
         break;
-      case PlayerController.name:
+      case PlayerController.className:
         constructor = PlayerController;
         break;
-      case PackageSpawner.name:
+      case PackageSpawner.className:
         constructor = PackageSpawner;
         break;
-      case Package.name:
+      case Package.className:
         constructor = Package;
         break;
-      case PackageCompressor.name:
+      case PackageCompressor.className:
         constructor = PackageCompressor;
         break;
-      case PackageReader.name:
+      case PackageReader.className:
         constructor = PackageReader;
         break;
-      case PackageTarget.name:
+      case PackageTarget.className:
         constructor = PackageTarget;
         break;
-      case PackageVirusScanner.name:
+      case PackageVirusScanner.className:
         constructor = PackageVirusScanner;
         break;
-      case PackageEncryptor.name:
+      case PackageEncryptor.className:
         constructor = PackageEncryptor;
         break;
-      case PackageSlapPig.name:
+      case PackageSlapPig.className:
         constructor = PackageSlapPig;
         break;
 
@@ -190,9 +190,9 @@ export class WorldStoreClass {
     if (isServer()) {
       GameStateStoreStore.state?.entities
         ? (GameStateStoreStore.state.entities =
-            GameStateStoreStore.state?.entities?.filter(
-              (e) => e.id !== entity.id
-            ))
+          GameStateStoreStore.state?.entities?.filter(
+            (e) => e.id !== entity.id
+          ))
         : null;
     }
   }
@@ -266,7 +266,7 @@ export class WorldStoreClass {
     );
   }
 
-  tick() {}
+  tick() { }
 }
 
 export const WorldStoreStore = new WorldStoreClass();
