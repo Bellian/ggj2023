@@ -168,7 +168,7 @@ export class ConnectionStoreClass {
             this.connection = this.peer.connect(id, {
                 metadata: {
                     name: PersistStoreStore.name,
-                    skin: 'pig'
+                    skin: PersistStoreStore.skin,
                 },
             });
         }))();

@@ -8,6 +8,7 @@ import { ConnectionStoreStore } from "./connectionStore";
 
 export class PersistStoreClass {
     name: string = '';
+    skin: string = '';
 
     constructor() {
         makeObservable(this, {
@@ -19,11 +20,12 @@ export class PersistStoreClass {
 
     init() {
         this.name = localStorage.getItem('name') || 'New Player';
+        this.skin = localStorage.getItem('skin') || 'default';
     }
 
     set<T extends PersistStoreClass>(key: keyof T, name: string) {
         (this as any)[key] = name;
-        localStorage.setItem('name', name);
+        localStorage.setItem(key as any, name);
     }
 
 }
