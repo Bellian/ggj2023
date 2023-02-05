@@ -50,11 +50,11 @@ export function initControlls() {
   function handleDown(ev: KeyboardEvent) {
     ev.preventDefault();
     const player = GameStateStoreStore.getOwnPlayerController();
-    player.addInput(ev.key);
+    player?.addInput(ev.key);
   }
   function handleUp(ev: KeyboardEvent) {
     const player = GameStateStoreStore.getOwnPlayerController();
-    player.removeInput(ev.key);
+    player?.removeInput(ev.key);
   }
 
   window.addEventListener('keydown', handleDown);
