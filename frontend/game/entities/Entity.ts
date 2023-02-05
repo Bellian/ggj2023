@@ -83,7 +83,6 @@ export class Entity {
             }
         }
         if (this.shouldDelete && isServer()) {
-            console.log('deleting!!!!')
             this.world.deleteEntity(this);
         }
 

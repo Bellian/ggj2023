@@ -26,6 +26,9 @@ export interface IPlayer {
 export interface IConfig {
     maxPlayers: number;
     level: number;
+    goal?: number;
+    end?: number;
+    score?: number;
 }
 
 
@@ -35,6 +38,7 @@ export class GameStateStoreClass {
     state: Partial<IGameState> = null;
     messages: string[] = [];
     interval: any;
+    durations: any[] = [];
 
     constructor() {
         makeObservable(this, {
@@ -145,19 +149,42 @@ export class GameStateStoreClass {
         }
     }
 
+    clearTimeouts() {
+        this.durations.forEach((e) => clearTimeout(e));
+        this.durations.length = 0;
+    }
+
     startGame() {
+        //this.clearTimeouts();
         this.state.state = 'started';
+        this.state.config.goal = 5 * this.state.players.length;
+        this.state.config.score = 0;
+        this.state.config.end = Date.now() + 1000 * 60 * 5;
         ConnectionStoreStore.peer.disconnect();
+
+        this.durations.push(setTimeout(() => {
+            this.endGame();
+        }, 1000 * 60 * 5));
     }
 
     endGame() {
+        this.clearTimeouts();
+
         this.state.state = 'ended';
         ConnectionStoreStore.peer.disconnect();
+
+        this.durations.push(setTimeout(() => {
+            this.resetGame();
+        }, 1000 * 10));
     }
 
     resetGame() {
+        this.clearTimeouts();
+
         this.state.state = 'prepare';
-        ConnectionStoreStore.peer.reconnect();
+        if (this.state.players.length < this.state.config.maxPlayers) {
+            ConnectionStoreStore.peer.reconnect();
+        }
     }
 
     brodcastMessage(data: string) {

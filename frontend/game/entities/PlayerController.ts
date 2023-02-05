@@ -105,7 +105,6 @@ export class PlayerController extends Entity {
     }
 
     interact(): void {
-        console.log('intreract');
         const targets = this.getEntitiesInRange(0.5);
         const current = targets.find(e => e instanceof Package && e.attachedTo === this.id) as Package;
         const pack = targets.find(e => e instanceof Package && !e.attachedTo) as Package;

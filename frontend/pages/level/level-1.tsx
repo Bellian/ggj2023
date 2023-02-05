@@ -60,6 +60,9 @@ export default observer(function Level1() {
     if (!gameStore.state?.state) {
       router.push('/');
     }
+    if (gameStore.state?.state === 'ended') {
+      router.push('/end');
+    }
   }, [connectionStore.type, gameStore.state?.state]);
 
   useEffect(() => {

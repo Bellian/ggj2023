@@ -41,11 +41,9 @@ export class PackageTarget extends Entity {
     }
 
     interact(pack: Package) {
-        console.log('INTERACTING');
         if (pack.actions.includes(this.id)) {
             return;
         }
-        console.log('PERFORM');
         pack.actions.push(this.id);
     }
 
