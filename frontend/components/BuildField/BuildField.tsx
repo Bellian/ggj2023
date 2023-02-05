@@ -6,7 +6,7 @@ import {
 import MapEditorStoreContext from '@/stores/mapEditorStore';
 import { Button, Dialog, TextField } from '@mui/material';
 import { observer } from 'mobx-react';
-import React, { FC, useContext, useEffect } from 'react';
+import React, { FC, useContext, useEffect, useState } from 'react';
 import Sprite from '../Sprite/Sprite';
 import Toolbar from '../Toolbar/Toolbar';
 import styles from './BuildField.module.scss';
@@ -141,7 +141,7 @@ const DialogToolbar = observer(() => {
 
 const RenderMap = observer(() => {
   const mapState = useContext(MapEditorStoreContext);
-  const elementSize = { width: 20, height: 20 };
+  const elementSize = 20;
   const [rightMouseDown, setRightMouseDown] = React.useState(false); // check if right mouse down used for hold insert
 
   useEffect(() => {
@@ -155,12 +155,15 @@ const RenderMap = observer(() => {
     return () => execFuncArray([mousedownEvent, mouseupEvent]);
   }, []);
 
+  const pxWidth = mapState.world.width * elementSize;
+  const pxHeight = mapState.world.height * elementSize;
+
   return (
     <div
       className={styles.BuildFieldSelection}
       style={{
-        width: mapState.world.width * elementSize.width,
-        height: mapState.world.height * elementSize.height,
+        width: pxWidth,
+        height: pxHeight,
       }}
     >
       {mapState.world.levels.map((level, activeLevelIndex) => {
@@ -170,41 +173,52 @@ const RenderMap = observer(() => {
             style={{
               pointerEvents:
                 mapState.activeLevel === activeLevelIndex ? 'initial' : 'none',
+              width: pxWidth,
+              height: pxHeight,
             }}
             key={activeLevelIndex}
           >
-            {level.map((sprite, spriteIndex) => (
-              <div
-                onClick={() => {
-                  mapState.set('currentEditedSprite', spriteIndex);
-                  mapState.set('toolbarOpen', true);
-                }}
-                onContextMenu={(ev) => {
-                  ev.preventDefault();
-                  mapState.setSprite(
-                    mapState.activeLevel,
-                    mapState.lastSprite,
-                    spriteIndex
-                  );
-                }}
-                onMouseOver={() => {
-                  rightMouseDown &&
+            {level.map((sprite, spriteIndex) => {
+              let x = spriteIndex % mapState.world.width;
+              let y = (spriteIndex / mapState.world.width) | 0;
+              return (
+                <div
+                  style={{
+                    position: 'absolute',
+                    top: y * elementSize,
+                    left: x * elementSize,
+                  }}
+                  onClick={() => {
+                    mapState.set('currentEditedSprite', spriteIndex);
+                    mapState.set('toolbarOpen', true);
+                  }}
+                  onContextMenu={(ev) => {
+                    ev.preventDefault();
                     mapState.setSprite(
                       mapState.activeLevel,
                       mapState.lastSprite,
                       spriteIndex
                     );
-                }}
-                key={activeLevelIndex + spriteIndex}
-              >
-                <Sprite
-                  name={sprite.name}
-                  elementSize={elementSize}
-                  position={sprite.position}
-                  animation={300}
-                />
-              </div>
-            ))}
+                  }}
+                  onMouseOver={() => {
+                    rightMouseDown &&
+                      mapState.setSprite(
+                        mapState.activeLevel,
+                        mapState.lastSprite,
+                        spriteIndex
+                      );
+                  }}
+                  key={`${activeLevelIndex}-${spriteIndex}-${sprite.name}-${sprite.position}`}
+                >
+                  <Sprite
+                    name={sprite.name}
+                    elementSize={{ width: elementSize, height: elementSize }}
+                    position={sprite.position}
+                    animation={300}
+                  />
+                </div>
+              );
+            })}
           </div>
         );
       })}

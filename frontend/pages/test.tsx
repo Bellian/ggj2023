@@ -15,10 +15,9 @@ export default function Test() {
         spriteData={testData}
         elementSize={{ width: 20, height: 20 }}
         playingFieldWidthAmountElements={10}
-      ></PlayingField>
-      <BuildField></BuildField>
+      ></PlayingField>s
   </>*/}
-      <Controller />
+      <BuildField></BuildField>
     </>
   );
 }

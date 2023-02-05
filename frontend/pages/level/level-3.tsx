@@ -17,8 +17,7 @@ import GameStateStoreContext, {
 } from '@/stores/gameStateStore';
 import { useRouter } from 'next/router';
 
-import data from '../../services/level-2.data';
-import { PackageSpawner } from '@/game/entities/PackageSpawner';
+import data from '../../services/level-3.data';
 import Camera from '@/game/assets/camera';
 
 const TILE_SIZE = 80;
@@ -66,20 +65,8 @@ export default observer(function Level1() {
         entities: [
           {
             class: PlayerSpawn,
-            position: vec2.fromValues(10, 10),
+            position: vec2.fromValues(46, 13),
             rotation: vec2.create(),
-            args: [],
-          },
-          {
-            class: PackageSpawner,
-            position: vec2.fromValues(2, 1),
-            rotation: vec2.fromValues(0, 1),
-            args: [],
-          },
-          {
-            class: PackageSpawner,
-            position: vec2.fromValues(2, 3),
-            rotation: vec2.fromValues(0, -1),
             args: [],
           },
         ],

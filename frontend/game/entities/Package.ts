@@ -30,7 +30,7 @@ export class Package extends Entity {
         super(position, rotation, world, gameState, connection);
 
         this.tileMeta = {
-            label: 'Package',
+            label: '',
         }
     }
 

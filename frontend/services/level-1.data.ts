@@ -816,7 +816,7 @@ export default {
                 "position": 0
             },
             {
-                "name": "animations/fastlane",
+                "name": "factory",
                 "position": 0
             },
             {
@@ -869,7 +869,7 @@ export default {
             },
             {
                 "name": "factory",
-                "position": 0
+                "position": 97
             },
             {
                 "name": "factory",
@@ -888,44 +888,8 @@ export default {
                 "position": 1
             },
             {
-                "name": "animations/conveyor-green",
-                "position": 0
-            },
-            {
-                "name": "empty",
-                "position": 0
-            },
-            {
-                "name": "empty",
-                "position": 0
-            },
-            {
-                "name": "animations/drill",
-                "position": 0
-            },
-            {
                 "name": "factory",
-                "position": 0
-            },
-            {
-                "name": "empty",
-                "position": 0
-            },
-            {
-                "name": "empty",
-                "position": 0
-            },
-            {
-                "name": "empty",
-                "position": 0
-            },
-            {
-                "name": "animations/drill",
-                "position": 0
-            },
-            {
-                "name": "factory",
-                "position": 4
+                "position": 105
             },
             {
                 "name": "empty",
@@ -937,239 +901,7 @@ export default {
             },
             {
                 "name": "factory",
-                "position": 2
-            },
-            {
-                "name": "animations/energy-controller",
-                "position": 0
-            },
-            {
-                "name": "empty",
-                "position": 0
-            },
-            {
-                "name": "empty",
-                "position": 0
-            },
-            {
-                "name": "empty",
-                "position": 0
-            },
-            {
-                "name": "empty",
-                "position": 0
-            },
-            {
-                "name": "factory",
-                "position": 0
-            },
-            {
-                "name": "factory",
-                "position": 0
-            },
-            {
-                "name": "empty",
-                "position": 0
-            },
-            {
-                "name": "empty",
-                "position": 0
-            },
-            {
-                "name": "empty",
-                "position": 0
-            },
-            {
-                "name": "empty",
-                "position": 0
-            },
-            {
-                "name": "factory",
-                "position": 1
-            },
-            {
-                "name": "empty",
-                "position": 0
-            },
-            {
-                "name": "empty",
-                "position": 0
-            },
-            {
-                "name": "empty",
-                "position": 0
-            },
-            {
-                "name": "empty",
-                "position": 0
-            },
-            {
-                "name": "empty",
-                "position": 0
-            },
-            {
-                "name": "empty",
-                "position": 0
-            },
-            {
-                "name": "empty",
-                "position": 0
-            },
-            {
-                "name": "factory",
-                "position": 4
-            },
-            {
-                "name": "empty",
-                "position": 0
-            },
-            {
-                "name": "empty",
-                "position": 0
-            },
-            {
-                "name": "empty",
-                "position": 0
-            },
-            {
-                "name": "factory",
-                "position": 3
-            },
-            {
-                "name": "empty",
-                "position": 0
-            },
-            {
-                "name": "factory",
-                "position": 1
-            },
-            {
-                "name": "factory",
-                "position": 2
-            },
-            {
-                "name": "empty",
-                "position": 0
-            },
-            {
-                "name": "empty",
-                "position": 0
-            },
-            {
-                "name": "empty",
-                "position": 0
-            },
-            {
-                "name": "empty",
-                "position": 0
-            },
-            {
-                "name": "factory",
-                "position": 1
-            },
-            {
-                "name": "factory",
-                "position": 3
-            },
-            {
-                "name": "factory",
-                "position": 3
-            },
-            {
-                "name": "factory",
-                "position": 3
-            },
-            {
-                "name": "factory",
-                "position": 3
-            },
-            {
-                "name": "empty",
-                "position": 0
-            },
-            {
-                "name": "empty",
-                "position": 0
-            },
-            {
-                "name": "empty",
-                "position": 0
-            },
-            {
-                "name": "empty",
-                "position": 0
-            },
-            {
-                "name": "empty",
-                "position": 0
-            },
-            {
-                "name": "empty",
-                "position": 0
-            },
-            {
-                "name": "empty",
-                "position": 0
-            },
-            {
-                "name": "factory",
-                "position": 4
-            },
-            {
-                "name": "factory",
-                "position": 73
-            },
-            {
-                "name": "factory",
-                "position": 3
-            },
-            {
-                "name": "factory",
-                "position": 1
-            },
-            {
-                "name": "empty",
-                "position": 0
-            },
-            {
-                "name": "empty",
-                "position": 0
-            },
-            {
-                "name": "empty",
-                "position": 0
-            },
-            {
-                "name": "empty",
-                "position": 0
-            },
-            {
-                "name": "factory",
-                "position": 1
-            },
-            {
-                "name": "factory",
-                "position": 40
-            },
-            {
-                "name": "factory",
-                "position": 40
-            },
-            {
-                "name": "factory",
-                "position": 40
-            },
-            {
-                "name": "factory",
-                "position": 3
-            },
-            {
-                "name": "empty",
-                "position": 0
-            },
-            {
-                "name": "empty",
-                "position": 0
+                "position": 105
             },
             {
                 "name": "factory",
@@ -1196,6 +928,274 @@ export default {
                 "position": 4
             },
             {
+                "name": "empty",
+                "position": 0
+            },
+            {
+                "name": "empty",
+                "position": 0
+            },
+            {
+                "name": "factory",
+                "position": 2
+            },
+            {
+                "name": "empty",
+                "position": 0
+            },
+            {
+                "name": "empty",
+                "position": 0
+            },
+            {
+                "name": "factory",
+                "position": 41
+            },
+            {
+                "name": "empty",
+                "position": 0
+            },
+            {
+                "name": "empty",
+                "position": 0
+            },
+            {
+                "name": "factory",
+                "position": 0
+            },
+            {
+                "name": "factory",
+                "position": 0
+            },
+            {
+                "name": "empty",
+                "position": 0
+            },
+            {
+                "name": "empty",
+                "position": 0
+            },
+            {
+                "name": "empty",
+                "position": 0
+            },
+            {
+                "name": "empty",
+                "position": 0
+            },
+            {
+                "name": "factory",
+                "position": 40
+            },
+            {
+                "name": "factory",
+                "position": 40
+            },
+            {
+                "name": "factory",
+                "position": 40
+            },
+            {
+                "name": "empty",
+                "position": 0
+            },
+            {
+                "name": "empty",
+                "position": 0
+            },
+            {
+                "name": "empty",
+                "position": 0
+            },
+            {
+                "name": "empty",
+                "position": 0
+            },
+            {
+                "name": "empty",
+                "position": 0
+            },
+            {
+                "name": "factory",
+                "position": 4
+            },
+            {
+                "name": "empty",
+                "position": 0
+            },
+            {
+                "name": "empty",
+                "position": 0
+            },
+            {
+                "name": "factory",
+                "position": 41
+            },
+            {
+                "name": "factory",
+                "position": 3
+            },
+            {
+                "name": "empty",
+                "position": 0
+            },
+            {
+                "name": "factory",
+                "position": 1
+            },
+            {
+                "name": "factory",
+                "position": 2
+            },
+            {
+                "name": "empty",
+                "position": 0
+            },
+            {
+                "name": "empty",
+                "position": 0
+            },
+            {
+                "name": "empty",
+                "position": 0
+            },
+            {
+                "name": "empty",
+                "position": 0
+            },
+            {
+                "name": "factory",
+                "position": 1
+            },
+            {
+                "name": "factory",
+                "position": 3
+            },
+            {
+                "name": "factory",
+                "position": 3
+            },
+            {
+                "name": "factory",
+                "position": 3
+            },
+            {
+                "name": "factory",
+                "position": 3
+            },
+            {
+                "name": "empty",
+                "position": 0
+            },
+            {
+                "name": "empty",
+                "position": 0
+            },
+            {
+                "name": "empty",
+                "position": 0
+            },
+            {
+                "name": "empty",
+                "position": 0
+            },
+            {
+                "name": "empty",
+                "position": 0
+            },
+            {
+                "name": "empty",
+                "position": 0
+            },
+            {
+                "name": "factory",
+                "position": 41
+            },
+            {
+                "name": "factory",
+                "position": 4
+            },
+            {
+                "name": "empty",
+                "position": 0
+            },
+            {
+                "name": "factory",
+                "position": 3
+            },
+            {
+                "name": "factory",
+                "position": 1
+            },
+            {
+                "name": "empty",
+                "position": 0
+            },
+            {
+                "name": "empty",
+                "position": 0
+            },
+            {
+                "name": "empty",
+                "position": 0
+            },
+            {
+                "name": "empty",
+                "position": 0
+            },
+            {
+                "name": "factory",
+                "position": 1
+            },
+            {
+                "name": "empty",
+                "position": 0
+            },
+            {
+                "name": "empty",
+                "position": 0
+            },
+            {
+                "name": "empty",
+                "position": 0
+            },
+            {
+                "name": "factory",
+                "position": 3
+            },
+            {
+                "name": "empty",
+                "position": 0
+            },
+            {
+                "name": "empty",
+                "position": 0
+            },
+            {
+                "name": "factory",
+                "position": 0
+            },
+            {
+                "name": "factory",
+                "position": 0
+            },
+            {
+                "name": "factory",
+                "position": 0
+            },
+            {
+                "name": "empty",
+                "position": 0
+            },
+            {
+                "name": "factory",
+                "position": 41
+            },
+            {
+                "name": "factory",
+                "position": 4
+            },
+            {
                 "name": "factory",
                 "position": 4
             },
@@ -1208,8 +1208,8 @@ export default {
                 "position": 4
             },
             {
-                "name": "animations/drill",
-                "position": 0
+                "name": "factory",
+                "position": 105
             },
             {
                 "name": "empty",
@@ -1228,16 +1228,16 @@ export default {
                 "position": 3
             },
             {
-                "name": "factory",
-                "position": 40
+                "name": "empty",
+                "position": 0
             },
             {
                 "name": "factory",
                 "position": 3
             },
             {
-                "name": "factory",
-                "position": 40
+                "name": "empty",
+                "position": 0
             },
             {
                 "name": "factory",
@@ -1268,8 +1268,8 @@ export default {
                 "position": 0
             },
             {
-                "name": "empty",
-                "position": 0
+                "name": "factory",
+                "position": 41
             },
             {
                 "name": "empty",
@@ -1304,20 +1304,20 @@ export default {
                 "position": 0
             },
             {
-                "name": "factory",
-                "position": 40
+                "name": "empty",
+                "position": 0
             },
             {
-                "name": "factory",
-                "position": 40
+                "name": "empty",
+                "position": 0
             },
             {
                 "name": "factory",
                 "position": 3
             },
             {
-                "name": "factory",
-                "position": 40
+                "name": "empty",
+                "position": 0
             },
             {
                 "name": "empty",
@@ -1348,8 +1348,8 @@ export default {
                 "position": 0
             },
             {
-                "name": "empty",
-                "position": 0
+                "name": "factory",
+                "position": 41
             },
             {
                 "name": "empty",
@@ -1397,34 +1397,6 @@ export default {
             },
             {
                 "name": "factory",
-                "position": 2
-            },
-            {
-                "name": "factory",
-                "position": 0
-            },
-            {
-                "name": "empty",
-                "position": 0
-            },
-            {
-                "name": "empty",
-                "position": 0
-            },
-            {
-                "name": "empty",
-                "position": 0
-            },
-            {
-                "name": "empty",
-                "position": 0
-            },
-            {
-                "name": "empty",
-                "position": 0
-            },
-            {
-                "name": "empty",
                 "position": 0
             },
             {
@@ -1441,47 +1413,23 @@ export default {
             },
             {
                 "name": "factory",
-                "position": 0
+                "position": 41
             },
             {
                 "name": "factory",
-                "position": 2
-            },
-            {
-                "name": "empty",
-                "position": 0
-            },
-            {
-                "name": "empty",
-                "position": 0
-            },
-            {
-                "name": "animations/compactor",
-                "position": 0
-            },
-            {
-                "name": "animations/conveyor-green",
-                "position": 0
-            },
-            {
-                "name": "animations/conveyor-green",
-                "position": 0
-            },
-            {
-                "name": "animations/conveyor-green",
-                "position": 0
-            },
-            {
-                "name": "animations/conveyor-green",
-                "position": 0
-            },
-            {
-                "name": "animations/crusher",
-                "position": 0
+                "position": 40
             },
             {
                 "name": "factory",
-                "position": 0
+                "position": 40
+            },
+            {
+                "name": "factory",
+                "position": 40
+            },
+            {
+                "name": "factory",
+                "position": 40
             },
             {
                 "name": "empty",
@@ -1489,34 +1437,6 @@ export default {
             },
             {
                 "name": "empty",
-                "position": 0
-            },
-            {
-                "name": "empty",
-                "position": 0
-            },
-            {
-                "name": "empty",
-                "position": 0
-            },
-            {
-                "name": "empty",
-                "position": 0
-            },
-            {
-                "name": "empty",
-                "position": 0
-            },
-            {
-                "name": "empty",
-                "position": 0
-            },
-            {
-                "name": "empty",
-                "position": 0
-            },
-            {
-                "name": "animations/drill",
                 "position": 0
             },
             {
@@ -1528,7 +1448,79 @@ export default {
                 "position": 2
             },
             {
-                "name": "animations/fastlane",
+                "name": "empty",
+                "position": 0
+            },
+            {
+                "name": "empty",
+                "position": 0
+            },
+            {
+                "name": "factory",
+                "position": 105
+            },
+            {
+                "name": "factory",
+                "position": 108
+            },
+            {
+                "name": "factory",
+                "position": 108
+            },
+            {
+                "name": "factory",
+                "position": 108
+            },
+            {
+                "name": "factory",
+                "position": 108
+            },
+            {
+                "name": "factory",
+                "position": 0
+            },
+            {
+                "name": "factory",
+                "position": 0
+            },
+            {
+                "name": "empty",
+                "position": 0
+            },
+            {
+                "name": "empty",
+                "position": 0
+            },
+            {
+                "name": "factory",
+                "position": 41
+            },
+            {
+                "name": "empty",
+                "position": 0
+            },
+            {
+                "name": "empty",
+                "position": 0
+            },
+            {
+                "name": "empty",
+                "position": 0
+            },
+            {
+                "name": "empty",
+                "position": 0
+            },
+            {
+                "name": "empty",
+                "position": 0
+            },
+            {
+                "name": "empty",
+                "position": 0
+            },
+            {
+                "name": "factory",
                 "position": 0
             },
             {
@@ -1541,6 +1533,14 @@ export default {
             },
             {
                 "name": "factory",
+                "position": 2
+            },
+            {
+                "name": "factory",
+                "position": 0
+            },
+            {
+                "name": "factory",
                 "position": 0
             },
             {
@@ -1573,7 +1573,7 @@ export default {
             },
             {
                 "name": "factory",
-                "position": 0
+                "position": 99
             },
             {
                 "name": "factory",
