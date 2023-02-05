@@ -9,13 +9,14 @@ import ConnectionStoreContext from '@/stores/connectionStore';
 import GameStateStoreContext from '@/stores/gameStateStore';
 import { useRouter } from 'next/router';
 
-import data from '../../services/levels/intro.data';
 import Camera from '@/game/assets/camera';
 import {
   initControlls,
   routeLevel,
   translateData,
 } from '@/helpers/translateData';
+
+import data from '../../services/levels/intro.data';
 
 const TILE_SIZE = 80;
 

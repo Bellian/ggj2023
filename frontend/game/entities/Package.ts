@@ -67,7 +67,7 @@ export class Package extends Entity {
         }
 
         const targets = this.getEntities(PackageTarget);
-        while (targets.length && this.tasks.length < this.gameState.state.config.level) {
+        while (targets.length && this.tasks.length < this.world.worldInfo.difficulty) {
             const target = randomElement(targets);
             this.tasks.push(target.id);
             targets.splice(targets.indexOf(target), 1);

@@ -40,15 +40,15 @@ export default observer(function Host() {
         style={{
           border: '6px solid #781d4f',
           borderRadius: '3px',
-          background: '#ffecec',
+          background: '#ffffff',
         }}
       >
         <Box padding={3} maxWidth={600} width={'98vw'}>
           <h3>{isServer() ? 'Host Game:' : 'Join Game:'}</h3>
 
           <UiGameConfig></UiGameConfig>
-          <UiPlayerList></UiPlayerList>
           <UiChat></UiChat>
+          <UiPlayerList></UiPlayerList>
         </Box>
       </Paper>
     </>
