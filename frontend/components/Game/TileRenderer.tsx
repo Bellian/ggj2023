@@ -16,7 +16,7 @@ export const TileRenderer = observer(
     const [s, setS] = useState(0);
 
     const dir = vec2.normalize(vec2.create(), tile.direction);
-    const rotation = (Math.atan2(dir[1], dir[0]) * 180) / Math.PI;
+    const rotation = (Math.atan2(dir[0], dir[1]) * 180) / Math.PI;
 
     useEffect(() => {
       setTimeout(() => {
@@ -33,16 +33,27 @@ export const TileRenderer = observer(
           left: tile.position[0] * tilesize,
           top: tile.position[1] * tilesize,
           zIndex: tile.level,
-          transform: `rotate(${rotation}deg)`,
+          width: tilesize,
+          height: tilesize,
         }}
       >
-        <Sprite
-          {...tile.sprite}
-          elementSize={{
-            height: tile.scale ? tilesize * tile.scale : tilesize,
-            width: tile.scale ? tilesize * tile.scale : tilesize,
+        <div
+          style={{
+            transform: `rotate(${rotation}deg)`,
           }}
-        />
+        >
+          <Sprite
+            {...tile.sprite}
+            elementSize={{
+              height: tile.scale ? tilesize * tile.scale : tilesize,
+              width: tile.scale ? tilesize * tile.scale : tilesize,
+            }}
+          />
+        </div>
+
+        {tile.displayMeta?.label && (
+          <p className={styles.label}>{tile.displayMeta.label}</p>
+        )}
       </div>
     );
   }

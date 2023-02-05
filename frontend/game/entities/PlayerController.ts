@@ -92,6 +92,12 @@ export class PlayerController extends Entity {
     }
 
     addInput(s: string) {
+
+        if (s === ' ') {
+            console.log('intreract');
+            return;
+        }
+
         this.inputs.add(s);
     }
 

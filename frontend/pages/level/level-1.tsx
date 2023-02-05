@@ -18,8 +18,10 @@ import GameStateStoreContext, {
 import { useRouter } from 'next/router';
 
 import data from '../../services/level-1.data';
+import { PackageSpawner } from '@/game/entities/PackageSpawner';
+import Camera from '@/game/assets/camera';
 
-const TILE_SIZE = 50;
+const TILE_SIZE = 80;
 
 function initControlls() {
   function handleDown(ev: KeyboardEvent) {
@@ -68,6 +70,18 @@ export default observer(function Level1() {
             rotation: vec2.create(),
             args: [],
           },
+          {
+            class: PackageSpawner,
+            position: vec2.fromValues(2, 1),
+            rotation: vec2.fromValues(0, 1),
+            args: [],
+          },
+          {
+            class: PackageSpawner,
+            position: vec2.fromValues(2, 3),
+            rotation: vec2.fromValues(0, -1),
+            args: [],
+          },
         ],
       })
     );
@@ -86,8 +100,10 @@ export default observer(function Level1() {
           height: TILE_SIZE * wolrd.worldInfo.height,
         }}
       >
-        <StaticTiles tilesize={TILE_SIZE}></StaticTiles>
-        <DynamicTiles tilesize={TILE_SIZE}></DynamicTiles>
+        <Camera>
+          <StaticTiles tilesize={TILE_SIZE}></StaticTiles>
+          <DynamicTiles tilesize={TILE_SIZE}></DynamicTiles>
+        </Camera>
       </div>
     </div>
   );

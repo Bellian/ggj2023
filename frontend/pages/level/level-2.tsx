@@ -18,8 +18,9 @@ import GameStateStoreContext, {
 import { useRouter } from 'next/router';
 
 import data from '../../services/level-2.data';
+import Camera from '@/game/assets/camera';
 
-const TILE_SIZE = 30;
+const TILE_SIZE = 80;
 
 function initControlls() {
   function handleDown(ev: KeyboardEvent) {
@@ -86,8 +87,10 @@ export default observer(function Level1() {
           height: TILE_SIZE * wolrd.worldInfo.height,
         }}
       >
-        <StaticTiles tilesize={TILE_SIZE}></StaticTiles>
-        <DynamicTiles tilesize={TILE_SIZE}></DynamicTiles>
+        <Camera>
+          <StaticTiles tilesize={TILE_SIZE}></StaticTiles>
+          <DynamicTiles tilesize={TILE_SIZE}></DynamicTiles>
+        </Camera>
       </div>
     </div>
   );

@@ -29,8 +29,9 @@ export class Entity {
     }
 
     public authority;
-    public desiredSprite
-    public sprite
+    public desiredSprite;
+    public sprite;
+    public tileMeta;
     tile: ITile;
 
     constructor(
@@ -53,14 +54,20 @@ export class Entity {
 
     tick(delta: number) { }
 
+    interact() {
+
+    }
+
     updateSprite() {
         if (!this.tile) {
             this.tile = this.world.dynamicTiles.find(tile => tile.entityID === this.id);
         }
+        if (this.tile) {
+            this.tile.displayMeta = this.tileMeta;
+        }
         if (this.tile && (this.sprite[0].name !== this.desiredSprite[0].name || this.sprite[0].position !== this.desiredSprite[0].position)) {
             this.tile.sprite = this.desiredSprite[0];
             this.sprite[0] = this.desiredSprite[0];
-            console.log('update Sprite', this.id, this.sprite[0]);
         }
     }
 

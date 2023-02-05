@@ -3,13 +3,13 @@ import { vec2 } from "gl-matrix";
 import { Entity } from "./Entity";
 
 
-export class PlayerSpawn extends Entity {
+export class Package extends Entity {
     static sprite = {
-        name: 'empty',
+        name: 'animations/box',
         position: 0,
     };
     static instance(world, gameState, connection, data) {
-        const instance = new PlayerSpawn(
+        const instance = new Package(
             vec2.clone(new Float32Array(data.position)),
             vec2.clone(new Float32Array(data.rotation)),
             world,
@@ -28,6 +28,14 @@ export class PlayerSpawn extends Entity {
         connection
     ) {
         super(position, rotation, world, gameState, connection);
+
+        this.tileMeta = {
+            label: 'Package',
+        }
+    }
+
+    tick(delta: number): void {
+
     }
 
     toJSON() {
