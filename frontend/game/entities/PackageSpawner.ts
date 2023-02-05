@@ -47,8 +47,6 @@ export class PackageSpawner extends Entity {
             if (Math.random() / delta < PACKAGE_SPAWN_RATE) {
                 const packages = this.getEntitiesInRange(0.5, Package);
                 if (packages.length === 0) {
-                    console.log('spawn package');
-
                     this.world.instanceEntity(
                         new Package(vec2.clone(this.position), vec2.create(), this.world, this.gameState, this.connection)
                     );

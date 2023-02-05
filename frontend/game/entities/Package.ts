@@ -1,4 +1,4 @@
-import { isClient, randomElement } from "@/helpers";
+import { isClient, isServer, randomElement } from "@/helpers";
 import { ISpriteInterface } from "@/stores/mapEditorStore";
 import { vec2, vec3 } from "gl-matrix";
 import { Entity } from "./Entity";
@@ -28,10 +28,6 @@ export class Package extends Entity {
         instance.tasks = data.tasks;
         instance.actions = data.actions;
 
-        console.log('ID', instance.id);
-        console.log('TASKS', ...instance.tasks);
-        console.log('ACTIONS', ...instance.actions);
-
         return instance;
     }
 
@@ -51,12 +47,7 @@ export class Package extends Entity {
     }
 
     eval() {
-        console.log('ID', this.id);
-        console.log('TASKS', ...this.tasks);
-        console.log('ACTIONS', ...this.actions);
         for (let task in this.tasks) {
-
-            console.log('COMPARE', this.actions[task], this.tasks[task]);
             if (!this.actions[task] || this.actions[task] !== this.tasks[task]) {
                 return false;
             }
@@ -83,14 +74,18 @@ export class Package extends Entity {
         }
 
         this.tasks.push(destination.id);
-
-        console.log('ID', this.id);
-        console.log('TASKS', ... this.tasks);
-        console.log('ACTIONS', ... this.actions);
     }
 
     tick(delta: number): void {
         super.tick(delta);
+
+        if (isServer() && this.eval()) {
+            this.gameState.state.config.score++;
+
+            if (this.gameState.state.config.score >= this.gameState.state.config.goal) {
+                this.gameState.endGame();
+            }
+        }
     }
 
     toJSON() {

@@ -57,7 +57,7 @@ export class PackageReader extends Entity {
                         return `${entity.proximityText} ${add}`;
                     }
                     return 'unknown';
-                }).join("\n") + JSON.stringify(pk.tasks) + JSON.stringify(pk.actions);
+                }).join("\n")// + JSON.stringify(pk.tasks) + JSON.stringify(pk.actions);
                 return;
             }
         }

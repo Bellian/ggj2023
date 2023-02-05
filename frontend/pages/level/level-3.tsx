@@ -18,7 +18,10 @@ import GameStateStoreContext, {
 import { useRouter } from 'next/router';
 
 import data from '../../services/level-3.data';
+import { PackageSpawner } from '@/game/entities/PackageSpawner';
 import Camera from '@/game/assets/camera';
+import { PackageCompressor } from '@/game/entities/PackageCompressor';
+import { PackageReader } from '@/game/entities/PackageReader';
 
 const TILE_SIZE = 80;
 
@@ -60,18 +63,34 @@ export default observer(function Level1() {
   }, [connectionStore.type, gameStore.state?.state]);
 
   useEffect(() => {
-    wolrd.createWorld(
-      Object.assign(data, {
-        entities: [
-          {
-            class: PlayerSpawn,
-            position: vec2.fromValues(46, 13),
-            rotation: vec2.create(),
-            args: [],
-          },
-        ],
+    data.entities = data.entities
+      .map((e: any) => {
+        console.log('pre', ...e.position);
+        e.position = vec2.clone(e.position as any) as any;
+        e.rotation = vec2.create() as any;
+        console.log('post', ...e.position);
+        switch (e.class) {
+          case 'player-spawner':
+            e.class = PlayerSpawn;
+            break;
+          case 'compactor':
+            e.class = PackageCompressor;
+            break;
+          case 'energy-controller':
+            e.class = PackageReader;
+            break;
+          case 'tunnel-in':
+            e.class = PackageSpawner;
+            break;
+          case 'tunnel-out':
+            e.class = PackageSpawner;
+            break;
+        }
+        return e;
       })
-    );
+      .filter((e) => typeof e.class !== 'string');
+
+    wolrd.createWorld(data as any);
   }, []);
 
   if (!wolrd.tiles) {
