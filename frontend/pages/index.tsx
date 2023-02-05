@@ -160,7 +160,7 @@ export default observer(function Home() {
                       name="gameName"
                       placeholder="Game Name"
                       label="Game Name"
-                      defaultValue={`Root The World Game - ${(Math.random() + 1)
+                      defaultValue={`Root The World Game ${(Math.random() + 1)
                         .toString(36)
                         .substring(2)}`}
                       sx={{ flexGrow: 1 }}
