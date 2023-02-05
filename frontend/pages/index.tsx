@@ -46,6 +46,7 @@ export default observer(function Home() {
 
   return (
     <>
+      <h1>Root The World</h1>
       <Music />
       <Video />
       <Grid container justifyContent={'center'} gap={2} padding={2}>
@@ -159,7 +160,7 @@ export default observer(function Home() {
                       name="gameName"
                       placeholder="Game Name"
                       label="Game Name"
-                      defaultValue={`new Game ${(Math.random() + 1)
+                      defaultValue={`Root The World Game - ${(Math.random() + 1)
                         .toString(36)
                         .substring(2)}`}
                       sx={{ flexGrow: 1 }}
