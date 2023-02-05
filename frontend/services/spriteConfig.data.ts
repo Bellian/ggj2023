@@ -398,6 +398,9 @@ export const getSpriteConfig: ISpriteSheetConfig[] = [
       {
         walkable: true,
       },
+      {
+        walkable: false,
+      },
     ],
   },
   {

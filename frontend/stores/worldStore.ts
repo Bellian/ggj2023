@@ -1,4 +1,6 @@
 import { Entity } from "@/game/entities/Entity";
+import { Package } from "@/game/entities/Package";
+import { PackageSpawner } from "@/game/entities/PackageSpawner";
 import { PlayerController } from "@/game/entities/PlayerController";
 import { PlayerSpawn } from "@/game/entities/PlayerSpawn";
 import { isServer } from "@/helpers";
@@ -30,6 +32,7 @@ export interface ITile {
     level: number;
     direction: vec2;
     meta: IMetaData;
+    displayMeta?: any;
     entityID?: number;
 }
 
@@ -83,8 +86,6 @@ export class WorldStoreClass {
     }
 
     instanceEntity(instance: Entity) {
-        console.log('instanceEntity', instance.desiredSprite);
-
         this.entities = this.entities || [];
         this.dynamicTiles = this.dynamicTiles || [];
         this.dynamicTiles.push({
@@ -104,7 +105,6 @@ export class WorldStoreClass {
     }
 
     createEntity(entity: any) {
-        console.log('createEntity', entity);
         // create entity
         let constructor: any = Entity;
         switch (entity.class) {
@@ -112,6 +112,10 @@ export class WorldStoreClass {
                 constructor = PlayerSpawn; break;
             case PlayerController.name:
                 constructor = PlayerController; break;
+            case PackageSpawner.name:
+                constructor = PackageSpawner; break;
+            case Package.name:
+                constructor = Package; break;
             default:
                 throw new Error('Unknown entity type');
         }
