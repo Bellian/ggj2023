@@ -161,6 +161,6 @@ export class PackageSlapPig extends PackageTarget {
     }
     packages.push(packageName);
 
-    this.proximityText = 'Feed the pig 🐷 ' + packageName;
+    this.proximityText = 'Feed ' + packageName;
   }
 }
