@@ -1,3 +1,4 @@
+import { Entity } from '@/game/entities/Entity';
 import {
   betterAddEventListener,
   downloadObjectAsJson,
@@ -7,6 +8,7 @@ import MapEditorStoreContext from '@/stores/mapEditorStore';
 import { Button, Dialog, TextField } from '@mui/material';
 import { observer } from 'mobx-react';
 import React, { FC, useContext, useEffect, useState } from 'react';
+import EntityToolbar from '../EntityToolbar/EntityToolbar';
 import Sprite from '../Sprite/Sprite';
 import Toolbar from '../Toolbar/Toolbar';
 import styles from './BuildField.module.scss';
@@ -19,6 +21,7 @@ const BuildField: FC<BuildFieldProps> = ({}) => {
       <Utils />
 
       <DialogToolbar />
+      <DialogEntityToolbar />
 
       <RenderMap />
     </div>
@@ -139,6 +142,15 @@ const DialogToolbar = observer(() => {
   );
 });
 
+const DialogEntityToolbar = observer(() => {
+  const mapState = useContext(MapEditorStoreContext);
+  return (
+    <Dialog open={mapState.entityToolbarOpen}>
+      <EntityToolbar></EntityToolbar>
+    </Dialog>
+  );
+});
+
 const RenderMap = observer(() => {
   const mapState = useContext(MapEditorStoreContext);
   const elementSize = 20;
@@ -188,9 +200,14 @@ const RenderMap = observer(() => {
                     top: y * elementSize,
                     left: x * elementSize,
                   }}
-                  onClick={() => {
+                  onClick={(event) => {
                     mapState.set('currentEditedSprite', spriteIndex);
                     mapState.set('toolbarOpen', true);
+                  }}
+                  onMouseDown={(event) => {
+                    event.preventDefault();
+                    if (event.button !== 1) return;
+                    mapState.set('entityToolbarOpen', true);
                   }}
                   onContextMenu={(ev) => {
                     ev.preventDefault();
@@ -201,6 +218,8 @@ const RenderMap = observer(() => {
                     );
                   }}
                   onMouseOver={() => {
+                    mapState.set('activeColumn', x);
+                    mapState.set('activeRow', y);
                     rightMouseDown &&
                       mapState.setSprite(
                         mapState.activeLevel,
@@ -210,12 +229,61 @@ const RenderMap = observer(() => {
                   }}
                   key={`${activeLevelIndex}-${spriteIndex}-${sprite.name}-${sprite.position}`}
                 >
-                  <Sprite
-                    name={sprite.name}
-                    elementSize={{ width: elementSize, height: elementSize }}
-                    position={sprite.position}
-                    animation={300}
-                  />
+                  <div
+                    style={{
+                      width: elementSize,
+                      height: elementSize,
+                    }}
+                  >
+                    <div className={styles.BuildFieldSelectionSpriteLabel}>
+                      {/*JSON.stringify(mapState.world.entities)*/}
+                      {mapState.world.entities
+                        .filter(
+                          (entity) =>
+                            entity.position[0] === x && entity.position[1] === y
+                        )
+                        .map((entity) => (
+                          <>
+                            <div
+                              className={
+                                styles.BuildFieldSelectionSpriteLabelIndicator
+                              }
+                            ></div>
+                            <Sprite
+                              name={`animations/${entity.class}`}
+                              elementSize={{
+                                width: elementSize,
+                                height: elementSize,
+                              }}
+                              position={0}
+                              animation={300}
+                            />
+                            <div
+                              style={{
+                                display:
+                                  mapState.activeColumn === x &&
+                                  mapState.activeRow === y
+                                    ? 'block'
+                                    : 'none',
+                              }}
+                              className={
+                                styles.BuildFieldSelectionSpriteLabelActive
+                              }
+                            >
+                              <span>Class: {entity.class}</span>
+                              <br />
+                              <span>Args: {entity.args}</span>
+                            </div>
+                          </>
+                        ))}
+                    </div>
+                    <Sprite
+                      name={sprite.name}
+                      elementSize={{ width: elementSize, height: elementSize }}
+                      position={sprite.position}
+                      animation={300}
+                    />
+                  </div>
                 </div>
               );
             })}

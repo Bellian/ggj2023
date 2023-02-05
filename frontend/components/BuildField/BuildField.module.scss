@@ -30,3 +30,26 @@
   display: flex;
   gap: 20px;
 }
+
+.BuildFieldSelectionSpriteLabel {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.BuildFieldSelectionSpriteLabelActive {
+  width: 200px;
+  background: rgba(255, 255, 255, 0.4);
+  padding: 2px 4px;
+  position: absolute;
+  left: -100px;
+}
+
+.BuildFieldSelectionSpriteLabelIndicator {
+  background: red;
+  width: 4px;
+  height: 4px;
+  position: absolute;
+  top: 4px;
+  left: 4px;
+}

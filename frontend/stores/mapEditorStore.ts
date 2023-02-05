@@ -15,8 +15,12 @@ export interface ISpriteInterface {
 
 export interface ISettableMapEditorElements {
   toolbarOpen: boolean;
+  entityToolbarOpen: boolean;
+
   currentEditedSprite: number;
   activeLevel: number;
+  activeRow: number;
+  activeColumn: number;
 
   lastSprite: ISpriteInterface;
 }
@@ -25,8 +29,11 @@ export class MapEditorStoreClass {
   world: IWorldInfo = { levels: [[]], width: 1, height: 1, entities: [] };
 
   toolbarOpen = false;
+  entityToolbarOpen = false;
   currentEditedSprite = 0;
   activeLevel = 0;
+  activeRow = 0;
+  activeColumn = 0;
 
   lastSprite: ISpriteInterface = {
     name: 'default',

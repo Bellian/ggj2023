@@ -1,199 +1,246 @@
-import { Entity } from "@/game/entities/Entity";
-import { Package } from "@/game/entities/Package";
-import { PackageSpawner } from "@/game/entities/PackageSpawner";
-import { PlayerController } from "@/game/entities/PlayerController";
-import { PlayerSpawn } from "@/game/entities/PlayerSpawn";
-import { isServer } from "@/helpers";
-import { getMetadataFoSprite, IMetaData } from "@/services/spriteConfig.data";
-import { vec2 } from "gl-matrix";
-import { action, computed, makeAutoObservable, makeObservable, observable } from "mobx";
-import Peer, { DataConnection } from "peerjs";
-import { createContext } from "react";
-import { ConnectionStoreStore } from "./connectionStore";
-import { GameStateStoreStore } from "./gameStateStore";
-import { ISpriteInterface } from "./mapEditorStore";
+import { Entity } from '@/game/entities/Entity';
+import { Package } from '@/game/entities/Package';
+import { PackageSpawner } from '@/game/entities/PackageSpawner';
+import { PlayerController } from '@/game/entities/PlayerController';
+import { PlayerSpawn } from '@/game/entities/PlayerSpawn';
+import { isServer } from '@/helpers';
+import { getMetadataFoSprite, IMetaData } from '@/services/spriteConfig.data';
+import { vec2 } from 'gl-matrix';
+import {
+  action,
+  computed,
+  makeAutoObservable,
+  makeObservable,
+  observable,
+} from 'mobx';
+import Peer, { DataConnection } from 'peerjs';
+import { createContext } from 'react';
+import { ConnectionStoreStore } from './connectionStore';
+import { GameStateStoreStore } from './gameStateStore';
+import { ISpriteInterface } from './mapEditorStore';
 
 export interface IWorldInfo {
-    levels: ISpriteInterface[][];
-    width: number;
-    height: number;
-    entities: {
-        class: typeof Entity;
-        args: any[],
-        position: vec2;
-        rotation: vec2;
-    }[];
+  levels: ISpriteInterface[][];
+  width: number;
+  height: number;
+  entities: {
+    class: string;
+    args: any[];
+    position: vec2;
+    rotation?: vec2;
+  }[];
 }
 
 export interface ITile {
-    sprite: ISpriteInterface;
-    position: vec2;
-    scale?: number;
-    level: number;
-    direction: vec2;
-    meta: IMetaData;
-    displayMeta?: any;
-    entityID?: number;
+  sprite: ISpriteInterface;
+  position: vec2;
+  scale?: number;
+  level: number;
+  direction: vec2;
+  meta: IMetaData;
+  displayMeta?: any;
+  entityID?: number;
 }
 
 export class WorldStoreClass {
-    tilesByPosition: ITile[][][] = null;
-    tiles: ITile[] = null;
-    dynamicTiles: ITile[] = null;
-    entities: Entity[] = null;
-    worldInfo: IWorldInfo = null;
+  tilesByPosition: ITile[][][] = null;
+  tiles: ITile[] = null;
+  dynamicTiles: ITile[] = null;
+  entities: Entity[] = null;
+  worldInfo: IWorldInfo = null;
 
-    last: number;
+  last: number;
 
-    constructor() {
-        makeAutoObservable(this);
+  constructor() {
+    makeAutoObservable(this);
+  }
+
+  reset() {
+    this.tiles = null;
+    this.dynamicTiles = null;
+    this.tilesByPosition = null;
+    this.entities = null;
+    this.worldInfo = null;
+  }
+
+  createWorld(info: IWorldInfo) {
+    if (!GameStateStoreStore.state) {
+      return;
     }
-
-    reset() {
-        this.tiles = null;
-        this.dynamicTiles = null;
-        this.tilesByPosition = null;
-        this.entities = null;
-        this.worldInfo = null;
+    if (this.tiles) {
+      return;
     }
-
-    createWorld(info: IWorldInfo) {
-        if (!GameStateStoreStore.state) {
-            return;
+    this.last = performance.now();
+    this.reset();
+    this.worldInfo = info;
+    this.createTiles(info.levels, info.width, info.height);
+    this.dynamicTiles = this.dynamicTiles || [];
+    this.entities = this.entities || [];
+    // create entities:
+    if (isServer()) {
+      info.entities.forEach((entity) => {
+        this.instanceEntity(
+          new entity.class(
+            entity.position,
+            entity.rotation,
+            this,
+            GameStateStoreStore,
+            ConnectionStoreStore
+          )
+        );
+      });
+      GameStateStoreStore.state?.players?.forEach((player) => {
+        const spawn = this.entities.find((e) => e instanceof PlayerSpawn);
+        if (!spawn) {
+          throw Error('No player spawn!');
         }
-        if (this.tiles) {
-            return;
+        this.instanceEntity(
+          new PlayerController(
+            vec2.clone(spawn.position),
+            vec2.clone(spawn.rotation),
+            this,
+            GameStateStoreStore,
+            ConnectionStoreStore,
+            player
+          )
+        );
+      });
+    }
+  }
+
+  instanceEntity(instance: Entity) {
+    this.entities = this.entities || [];
+    this.dynamicTiles = this.dynamicTiles || [];
+    this.dynamicTiles.push({
+      sprite: instance.getSprite(),
+      direction: instance.rotation,
+      scale: instance.getScale(),
+      position: instance.position,
+      level: 100,
+      meta: {},
+      entityID: instance.id,
+    });
+
+    this.entities.push(instance);
+    if (isServer()) {
+      GameStateStoreStore.state?.entities?.push(instance.toJSON());
+    }
+  }
+
+  createEntity(entity: any) {
+    // create entity
+    let constructor: any = Entity;
+    switch (entity.class) {
+      case PlayerSpawn.name:
+        constructor = PlayerSpawn;
+        break;
+      case PlayerController.name:
+        constructor = PlayerController;
+        break;
+      case PackageSpawner.name:
+        constructor = PackageSpawner;
+        break;
+      case Package.name:
+        constructor = Package;
+        break;
+      default:
+        throw new Error('Unknown entity type');
+    }
+    const instance = (constructor as typeof Entity).instance(
+      this,
+      GameStateStoreStore,
+      ConnectionStoreStore,
+      entity
+    );
+    this.instanceEntity(instance);
+  }
+
+  deleteEntity(entity: Entity) {
+    this.dynamicTiles = this.dynamicTiles.filter((tile) => {
+      return tile.entityID !== entity.id;
+    });
+
+    this.entities.filter((instance) => instance !== entity);
+    if (isServer()) {
+      GameStateStoreStore.state?.entities
+        ? (GameStateStoreStore.state.entities =
+            GameStateStoreStore.state?.entities?.filter(
+              (e) => e.id !== entity.id
+            ))
+        : null;
+    }
+  }
+
+  update() {
+    if (!this.worldInfo) {
+      return;
+    }
+    const now = performance.now();
+    const delta = (now - this.last) / 1000;
+    this.entities.forEach((e) => e.tick(delta));
+    this.entities.forEach((e) => e.updateSprite());
+    this.last = now;
+  }
+
+  createTiles(levels: ISpriteInterface[][], width: number, height: number) {
+    this.tiles = [];
+    this.tilesByPosition = Array(height)
+      .fill(0)
+      .map(() => []);
+    this.tilesByPosition.forEach((row) => {
+      row.push(
+        ...Array(width)
+          .fill(0)
+          .map(() => [])
+      );
+    });
+    // itterate over level
+    for (let level = 0; level < levels.length; level++) {
+      // itterate over sprites
+      for (let sprite = 0; sprite < levels[level].length; sprite++) {
+        if (levels[level][sprite].name === 'empty') {
+          continue;
         }
-        this.last = performance.now();
-        this.reset();
-        this.worldInfo = info;
-        this.createTiles(info.levels, info.width, info.height);
-        this.dynamicTiles = this.dynamicTiles || [];
-        this.entities = this.entities || [];
-        // create entities:
-        if (isServer()) {
-            info.entities.forEach((entity) => {
-                this.instanceEntity(new entity.class(entity.position, entity.rotation, this, GameStateStoreStore, ConnectionStoreStore));
-            });
-            GameStateStoreStore.state?.players?.forEach((player) => {
-                const spawn = this.entities.find(e => e instanceof PlayerSpawn);
-                if (!spawn) {
-                    throw Error('No player spawn!');
-                }
-                this.instanceEntity(new PlayerController(vec2.clone(spawn.position), vec2.clone(spawn.rotation), this, GameStateStoreStore, ConnectionStoreStore, player));
-            })
-        }
+        const x = sprite % width;
+        const y = (sprite / width) | 0;
+        const tile = {
+          sprite: levels[level][sprite],
+          direction: vec2.create(),
+          position: vec2.fromValues(x, y),
+          level: level,
+          meta: getMetadataFoSprite(
+            levels[level][sprite].name,
+            levels[level][sprite].position
+          ),
+        } as ITile;
+        this.tilesByPosition[y][x].push(tile);
+        this.tiles.push(tile);
+      }
     }
+  }
 
-    instanceEntity(instance: Entity) {
-        this.entities = this.entities || [];
-        this.dynamicTiles = this.dynamicTiles || [];
-        this.dynamicTiles.push({
-            sprite: instance.getSprite(),
-            direction: instance.rotation,
-            scale: instance.getScale(),
-            position: instance.position,
-            level: 100,
-            meta: {},
-            entityID: instance.id,
-        });
+  getTiles(x: number, y: number, r = 1) {
+    const tiles: ITile[] = [];
+    return tiles.concat(
+      this.tilesByPosition[y | 0][x | 0],
+      this.tilesByPosition[(y + r) | 0][x | 0],
+      this.tilesByPosition[y | 0][(x + r) | 0],
+      this.tilesByPosition[(y + r) | 0][(x + r) | 0]
+    );
+  }
+  getUniqueTiles(x: number, y: number, r = 1) {
+    const set = new Set<ITile>();
+    this.getTiles(x, y, r).forEach((e) => set.add(e));
+    return [...set];
+  }
+  isWalkable(x: number, y: number, r = 1) {
+    return this.getTiles(x, y, r).reduce(
+      (walkable, tile) => walkable && tile.meta.walkable,
+      true
+    );
+  }
 
-        this.entities.push(instance);
-        if (isServer()) {
-            GameStateStoreStore.state?.entities?.push(instance.toJSON());
-        }
-    }
-
-    createEntity(entity: any) {
-        // create entity
-        let constructor: any = Entity;
-        switch (entity.class) {
-            case PlayerSpawn.name:
-                constructor = PlayerSpawn; break;
-            case PlayerController.name:
-                constructor = PlayerController; break;
-            case PackageSpawner.name:
-                constructor = PackageSpawner; break;
-            case Package.name:
-                constructor = Package; break;
-            default:
-                throw new Error('Unknown entity type');
-        }
-        const instance = (constructor as typeof Entity).instance(this, GameStateStoreStore, ConnectionStoreStore, entity);
-        this.instanceEntity(instance);
-    }
-
-    deleteEntity(entity: Entity) {
-        this.dynamicTiles = this.dynamicTiles.filter(tile => {
-            return tile.entityID !== entity.id;
-        });
-
-        this.entities.filter(instance => instance !== entity);
-        if (isServer()) {
-            GameStateStoreStore.state?.entities ? GameStateStoreStore.state.entities = GameStateStoreStore.state?.entities?.filter(e => e.id !== entity.id) : null;
-        }
-    }
-
-    update() {
-        if (!this.worldInfo) {
-            return;
-        }
-        const now = performance.now();
-        const delta = (now - this.last) / 1000;
-        this.entities.forEach(e => e.tick(delta));
-        this.entities.forEach(e => e.updateSprite());
-        this.last = now;
-    }
-
-    createTiles(levels: ISpriteInterface[][], width: number, height: number) {
-        this.tiles = [];
-        this.tilesByPosition = Array(height).fill(0).map(() => []);
-        this.tilesByPosition.forEach(row => {
-            row.push(...Array(width).fill(0).map(() => []));
-        });
-        // itterate over level
-        for (let level = 0; level < levels.length; level++) {
-            // itterate over sprites
-            for (let sprite = 0; sprite < levels[level].length; sprite++) {
-                if (levels[level][sprite].name === 'empty') {
-                    continue;
-                }
-                const x = sprite % width;
-                const y = (sprite / width) | 0;
-                const tile = {
-                    sprite: levels[level][sprite],
-                    direction: vec2.create(),
-                    position: vec2.fromValues(x, y),
-                    level: level,
-                    meta: getMetadataFoSprite(levels[level][sprite].name, levels[level][sprite].position),
-                } as ITile;
-                this.tilesByPosition[y][x].push(tile);
-                this.tiles.push(tile);
-            }
-        }
-    }
-
-    getTiles(x: number, y: number, r = 1) {
-        const tiles: ITile[] = [];
-        return tiles.concat(
-            this.tilesByPosition[y | 0][x | 0],
-            this.tilesByPosition[y + r | 0][x | 0],
-            this.tilesByPosition[y | 0][x + r | 0],
-            this.tilesByPosition[y + r | 0][x + r | 0],
-        )
-    }
-    getUniqueTiles(x: number, y: number, r = 1) {
-        const set = new Set<ITile>();
-        this.getTiles(x, y, r).forEach(e => set.add(e));
-        return [...set];
-    }
-    isWalkable(x: number, y: number, r = 1) {
-        return this.getTiles(x, y, r).reduce((walkable, tile) => walkable && tile.meta.walkable, true);
-    }
-
-    tick() {
-    }
-
+  tick() {}
 }
 
 export const WorldStoreStore = new WorldStoreClass();
