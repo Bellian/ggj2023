@@ -194,13 +194,13 @@ export class GameStateStoreClass {
 
     // player
     getPlayer(id: string) {
-        return this.state.players.find(p => p.id === id);
+        return this.state?.players?.find(p => p.id === id);
     }
     getOwnPlayer() {
         return this.getPlayer(ConnectionStoreStore.id);
     }
     getPlayerController(player: IPlayer) {
-        return WorldStoreStore.entities.find(e => e instanceof PlayerController && e.player.id === player.id) as PlayerController;
+        return WorldStoreStore.entities?.find(e => e instanceof PlayerController && e.player.id === player.id) as PlayerController;
     }
     getOwnPlayerController() {
         return this.getPlayerController(this.getOwnPlayer());
