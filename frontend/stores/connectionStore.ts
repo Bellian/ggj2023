@@ -5,7 +5,7 @@ import { GameStateStoreClass, GameStateStoreStore } from "./gameStateStore";
 import { PersistStoreStore } from "./persistStore";
 
 
-type MessageType = 'message' | 'state' | 'entityUpdate';
+type MessageType = 'message' | 'state' | 'entityUpdate' | 'action';
 
 const peers: Peer[] = [];
 
@@ -118,6 +118,9 @@ export class ConnectionStoreClass {
                         break;
                     case 'state':
                         console.log('state update from client');
+                        break;
+                    case 'action':
+
                         break;
                     // GameStateStoreStore.setState(data.data);
                 }

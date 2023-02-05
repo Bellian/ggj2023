@@ -237,6 +237,7 @@ export class GameStateStoreClass {
         })
         if (delelteUnknown) {
             left.forEach(entity => {
+                console.log('delete entity', entity.id)
                 WorldStoreStore.deleteEntity(entity);
             });
         }

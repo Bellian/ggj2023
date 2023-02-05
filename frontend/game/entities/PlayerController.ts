@@ -7,8 +7,11 @@ import { ISpriteInterface } from "@/stores/mapEditorStore";
 import { ITile, WorldStoreClass } from "@/stores/worldStore";
 import { vec2 } from "gl-matrix";
 import { Entity } from "./Entity";
+import { Package } from "./Package";
+import { PackageSpawner } from "./PackageSpawner";
+import { PackageTarget } from "./PackageTarget";
 
-const PLAYER_SPEED = 3;
+const PLAYER_SPEED = 4;
 
 const SPRITES = {
     default: {
@@ -53,6 +56,7 @@ const SPRITES = {
 export class PlayerController extends Entity {
 
     static scale: number = 0.7;
+    static className = 'PlayerController';
 
     static instance(world, gameState, connection, data) {
         const instance = new PlayerController(
@@ -94,11 +98,55 @@ export class PlayerController extends Entity {
     addInput(s: string) {
 
         if (s === ' ') {
-            console.log('intreract');
-            return;
+            this.interact();
         }
 
         this.inputs.add(s);
+    }
+
+    interact(): void {
+        console.log('intreract');
+        const targets = this.getEntitiesInRange(0.5);
+        const current = targets.find(e => e instanceof Package && e.attachedTo === this.id) as Package;
+        const pack = targets.find(e => e instanceof Package && !e.attachedTo) as Package;
+        console.log('TARGETS', ...targets);
+        console.log('current', current);
+        console.log('pack', pack);
+
+        if (!current && pack) {
+            // attach to package
+            pack.claim();
+            pack.attach(this);
+            return;
+        }
+
+        if (current) {
+            for (const inteactable of targets) {
+                if (inteactable instanceof PackageSpawner) {
+                    current.actions.push(inteactable.id);
+
+                    const success = current.eval();
+                    if (success) {
+                        current.destroy();
+                        current.detatch();
+                    } else {
+                        current.actions.length = 0;
+                    }
+                    return;
+                }
+                if (inteactable instanceof PackageTarget) {
+                    inteactable.interact(current);
+                    return;
+                }
+
+            }
+
+            // attach to package
+            current.detatch();
+            current.free();
+            return;
+        }
+        return;
     }
 
     removeInput(s: string) {

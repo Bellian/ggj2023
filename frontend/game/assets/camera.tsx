@@ -38,6 +38,7 @@ function Camera({ children }: CameraParams) {
           (-offset[1] / height) * 100
         }%)`,
         contain: 'strict',
+        transition: '.3s',
       }}
     >
       {children}
