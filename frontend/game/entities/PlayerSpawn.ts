@@ -28,7 +28,6 @@ export class PlayerSpawn extends Entity {
         connection
     ) {
         super(position, rotation, world, gameState, connection);
-        console.log(...position);
     }
 
     toJSON() {

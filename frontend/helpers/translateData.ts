@@ -17,9 +17,6 @@ export function translateData(data: any) {
         case 'player-spawner':
           e.class = PlayerSpawn;
           break;
-        case 'compactor':
-          e.class = PackageCompressor;
-          break;
         case 'energy-controller':
           e.class = PackageReader;
           break;
@@ -35,9 +32,11 @@ export function translateData(data: any) {
         case 'power-controller':
           e.class = PackageEncryptor;
           break;
+        case 'compactor':
+          e.class = PackageCompressor;
+          break;
         case 'slap-pig':
           e.class = PackageSlapPig;
-          console.log('found package PackageSlapPig');
           break;
       }
       return e;
