@@ -1,4 +1,4 @@
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { observer } from 'mobx-react';
 import ConnectionStoreContext from '@/stores/connectionStore';
 import {
@@ -23,8 +23,15 @@ export default observer(function Host() {
   const connectionStore = useContext(ConnectionStoreContext);
   const gameStore = useContext(GameStateStoreContext);
   const router = useRouter();
+  const [win, setWin] = useState(false);
+  const [score, setScore] = useState('');
 
-  const win = gameStore.state.config.goal <= gameStore.state.config.score;
+  useEffect(() => {
+    setWin(gameStore.state.config.goal <= gameStore.state.config.score);
+    setScore(
+      `${gameStore.state.config.score} / ${gameStore.state.config.goal}`
+    );
+  }, []);
 
   useEffect(() => {
     if (!gameStore.state?.state || connectionStore.type === 'none') {
@@ -47,10 +54,7 @@ export default observer(function Host() {
       >
         <Box padding={3} maxWidth={600} width={'98vw'}>
           <h2>{win ? 'Success!' : 'Game Over!'}</h2>
-          <p>
-            Points: {gameStore.state.config.score} /{' '}
-            {gameStore.state.config.goal}
-          </p>
+          <p>Points: {score}</p>
         </Box>
       </Paper>
     </>
