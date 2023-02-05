@@ -53,7 +53,11 @@ export default observer(function Host() {
         }}
       >
         <Box padding={3} maxWidth={600} width={'98vw'}>
-          <h2>{win ? 'Success!' : 'Game Over!'}</h2>
+          <h2>
+            {win
+              ? 'You are a Winner 🥳! - Game is restarting⏳'
+              : 'Game Over! - Game is restarting⏳'}
+          </h2>
           <p>Points: {score}</p>
         </Box>
       </Paper>
