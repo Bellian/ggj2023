@@ -17,7 +17,7 @@ import GameStateStoreContext, {
 } from '@/stores/gameStateStore';
 import { useRouter } from 'next/router';
 
-import data from './level-2.data';
+import data from '../../services/level-2.data';
 
 const TILE_SIZE = 30;
 

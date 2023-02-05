@@ -108,9 +108,9 @@ export class WorldStoreClass {
         // create entity
         let constructor: any = Entity;
         switch (entity.class) {
-            case 'PlayerSpawn':
+            case PlayerSpawn.name:
                 constructor = PlayerSpawn; break;
-            case 'PlayerController':
+            case PlayerController.name:
                 constructor = PlayerController; break;
             default:
                 throw new Error('Unknown entity type');
