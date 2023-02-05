@@ -75,7 +75,7 @@ export class GameStateStoreClass {
             this.state = {
                 state: "prepare",
                 config: {
-                    maxPlayers: 4,
+                    maxPlayers: 50,
                     level: 1,
                 },
                 world: {},
