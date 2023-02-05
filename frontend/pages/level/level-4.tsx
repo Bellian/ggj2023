@@ -16,7 +16,7 @@ import {
   translateData,
 } from '@/helpers/translateData';
 
-import data from '../../services/levels/small.data';
+import data from '../../services/levels/feed-the-pig';
 import Score from '@/game/assets/Score';
 
 const TILE_SIZE = 80;

@@ -33,9 +33,10 @@ const UiGameConfig: FC<UiGameConfigProps> = observer(() => {
                 style: { paddingTop: 8, paddingBottom: 8 },
               }}
             >
-              <MenuItem value={1}>Layer 1 ✨</MenuItem>
-              <MenuItem value={2}>Layer 2 🔥</MenuItem>
-              <MenuItem value={3}>Layer 3 🔥</MenuItem>
+              <MenuItem value={1}>Intro ✨</MenuItem>
+              <MenuItem value={2}>Small ✨</MenuItem>
+              <MenuItem value={3}>Long Corridor 🔥</MenuItem>
+              <MenuItem value={4}>Feed the pig 🤡</MenuItem>
             </Select>
           )}
           {isClient() && `Layer ${gameStore.state?.config?.level || 1}`}
