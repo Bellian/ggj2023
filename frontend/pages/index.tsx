@@ -50,13 +50,17 @@ export default observer(function Home() {
   return (
     <div
       style={{
+        width: '100%',
         overflowX: 'auto',
       }}
     >
       <Grid container justifyContent={'center'} gap={2} padding={2}>
-        <h1>Root The World</h1>
-        <Music />
-        <Video />
+        <Grid item flexGrow={0}>
+          <h1>Root The World</h1>
+
+          <Music />
+          <Video />
+        </Grid>
       </Grid>
       <Grid container justifyContent={'center'} gap={2} padding={2}>
         <Grid item flexGrow={0}>
