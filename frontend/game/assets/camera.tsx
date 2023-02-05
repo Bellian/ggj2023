@@ -13,7 +13,7 @@ function Camera({ children }: CameraParams) {
   useEffect(() => {
     setTimeout(() => {
       setS(s + 1);
-    }, 1000 / 60);
+    }, 1000 / 10);
   });
 
   const controller = gameState.getOwnPlayerController();
