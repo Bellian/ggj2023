@@ -110,7 +110,11 @@ export default {
     { class: 'power-controller', position: [3, 2], args: [] },
     { class: 'storage', position: [5, 2], args: [] },
     { class: 'compactor', position: [7, 2], args: [] },
-    { class: 'player-spawner', position: [2, 5], args: [] },
+    { class: 'tunnel-out', position: [3, 6], args: [] },
+    { class: 'tunnel-in', position: [2, 6], args: [] },
+    { class: 'tunnel-in', position: [2, 5], args: [] },
+    { class: 'tunnel-out', position: [3, 5], args: [] },
+    { class: 'player-spawner', position: [7, 8], args: [] },
   ],
   difficulty: 0,
 };
