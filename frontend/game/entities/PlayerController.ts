@@ -109,9 +109,6 @@ export class PlayerController extends Entity {
         const targets = this.getEntitiesInRange(0.5);
         const current = targets.find(e => e instanceof Package && e.attachedTo === this.id) as Package;
         const pack = targets.find(e => e instanceof Package && !e.attachedTo) as Package;
-        console.log('TARGETS', ...targets);
-        console.log('current', current);
-        console.log('pack', pack);
 
         if (!current && pack) {
             // attach to package

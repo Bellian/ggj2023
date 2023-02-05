@@ -6,7 +6,7 @@ import { ITile, WorldStoreClass, WorldStoreStore } from "@/stores/worldStore";
 import { vec2 } from "gl-matrix";
 import { PlayerController } from "./PlayerController";
 
-let ENTITY_ID = 0;
+let ENTITY_ID = 1;
 
 
 export class Entity {
