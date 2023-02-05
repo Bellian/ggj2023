@@ -32,7 +32,7 @@ function Score() {
       <h3>
         {store.state.config.score} / {store.state.config.goal}
       </h3>
-      <h3>{formatTime(store.state.config.end)}</h3>
+      <h3>{formatTime(store.state?.config?.end)}</h3>
     </div>
   );
 }
