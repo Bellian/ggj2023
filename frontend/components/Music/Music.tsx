@@ -9,6 +9,7 @@ const Music: FC<MusicProps> = () => {
     const audio = new Audio(
       '/music/Slower-Tempo-2020-04-24_-_Arcade_Kid_-_FesliyanStudios.com_-_David_Renda.mp3'
     );
+    audio.loop = true;
     audio.play();
   };
   return (
