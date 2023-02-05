@@ -18,6 +18,7 @@ import GameStateStoreContext, {
   GameStateStoreStore,
 } from '@/stores/gameStateStore';
 import Music from '@/components/Music/Music';
+import Video from '@/components/Video/Video';
 
 export default observer(function Home() {
   const connectionStore = useContext(ConnectionStoreContext);
@@ -45,9 +46,16 @@ export default observer(function Home() {
   return (
     <>
       <Music />
+      <Video />
       <Grid container justifyContent={'center'} gap={2} padding={2}>
         <Grid item flexGrow={0}>
-          <Paper>
+          <Paper
+            style={{
+              border: '6px solid #cf752b',
+              borderRadius: '3px',
+              background: '#fff5ec',
+            }}
+          >
             <Box
               padding={3}
               display="flex"
@@ -88,7 +96,14 @@ export default observer(function Home() {
           display={'flex'}
           flexDirection="column"
         >
-          <Paper sx={{ flexGrow: 1 }}>
+          <Paper
+            sx={{ flexGrow: 1 }}
+            style={{
+              border: '6px solid #3b7d4f',
+              borderRadius: '3px',
+              background: '#ecfff3e6',
+            }}
+          >
             <Box padding={3}>
               <h3>Join Game:</h3>
               <List>
@@ -116,7 +131,14 @@ export default observer(function Home() {
           display={'flex'}
           flexDirection="column"
         >
-          <Paper sx={{ flexGrow: 1 }}>
+          <Paper
+            sx={{ flexGrow: 1 }}
+            style={{
+              border: '6px solid #781d4f',
+              borderRadius: '3px',
+              background: '#ffecec',
+            }}
+          >
             <Box padding={3}>
               <h3>Host Game</h3>
               <form
