@@ -27,6 +27,7 @@ function Score() {
         top: 0,
         left: '50%',
         transform: 'translateX(-50%)',
+        zIndex: 1000,
       }}
     >
       <h3>
