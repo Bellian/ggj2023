@@ -1,6 +1,7 @@
 import { Entity } from '@/game/entities/Entity';
 import { Package } from '@/game/entities/Package';
 import { PackageCompressor } from '@/game/entities/PackageCompressor';
+import { PackageEncryptor } from '@/game/entities/PackageEncryptor';
 import { PackageReader } from '@/game/entities/PackageReader';
 import { PackageSpawner } from '@/game/entities/PackageSpawner';
 import { PackageTarget } from '@/game/entities/PackageTarget';
@@ -159,6 +160,9 @@ export class WorldStoreClass {
         break;
       case PackageVirusScanner.name:
         constructor = PackageVirusScanner;
+        break;
+      case PackageEncryptor.name:
+        constructor = PackageEncryptor;
         break;
       default:
         throw new Error('Unknown entity type' + entity.class);

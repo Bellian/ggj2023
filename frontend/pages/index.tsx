@@ -159,7 +159,9 @@ export default observer(function Home() {
                       name="gameName"
                       placeholder="Game Name"
                       label="Game Name"
-                      defaultValue={'new Game'}
+                      defaultValue={`new Game ${(Math.random() + 1)
+                        .toString(36)
+                        .substring(2)}`}
                       sx={{ flexGrow: 1 }}
                       required
                     ></TextField>

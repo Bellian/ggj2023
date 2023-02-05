@@ -1,4 +1,5 @@
 import { PackageCompressor } from '@/game/entities/PackageCompressor';
+import { PackageEncryptor } from '@/game/entities/PackageEncryptor';
 import { PackageReader } from '@/game/entities/PackageReader';
 import { PackageSpawner } from '@/game/entities/PackageSpawner';
 import { PackageVirusScanner } from '@/game/entities/PackageVirusScanner';
@@ -29,6 +30,10 @@ export function translateData(data: any) {
         case 'storage':
           e.class = PackageVirusScanner;
           console.log('found virus scanner (storage)');
+          break;
+        case 'power-controller':
+          e.class = PackageEncryptor;
+          console.log('found package encryptor');
           break;
       }
       return e;
