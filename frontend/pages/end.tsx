@@ -56,7 +56,7 @@ export default observer(function Host() {
           <h2>
             {win
               ? 'You are a Winner 🥳! - Game is restarting⏳'
-              : 'Game Over! - Game is restarting⏳'}
+              : 'Game Over 😥 - Game is restarting⏳'}
           </h2>
           <p>Points: {score}</p>
         </Box>
